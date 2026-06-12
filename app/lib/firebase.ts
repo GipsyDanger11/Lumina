@@ -18,7 +18,6 @@ import {
   Timestamp,
   orderBy,
   limit,
-  enableMultiTabIndexedDbPersistence,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -47,17 +46,6 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 const auth = getAuth(app);
-
-// Enable offline persistence
-if (typeof window !== "undefined") {
-  enableMultiTabIndexedDbPersistence(db).catch((err) => {
-    if (err.code === "failed-precondition") {
-      console.warn("Firebase persistence: multiple tabs open");
-    } else if (err.code === "unimplemented") {
-      console.warn("Firebase persistence: not supported in this environment");
-    }
-  });
-}
 
 export {
   db,

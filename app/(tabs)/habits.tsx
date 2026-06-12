@@ -122,13 +122,13 @@ export default function HabitsScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-lumina-bg-primary" showsVerticalScrollIndicator={false}>
-      <View className="pt-16 px-6">
-        <View className="flex-row items-center justify-between mb-6">
-          <Text className="text-lumina-text-primary text-2xl font-bold">Habits</Text>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0F" }} showsVerticalScrollIndicator={false}>
+      <View style={{ paddingTop: 64, paddingHorizontal: 24 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+          <Text style={{ color: "#FFFFFF", fontSize: 24, fontWeight: "700" }}>Habits</Text>
           <TouchableOpacity
             onPress={() => setShowCreate(true)}
-            className="bg-lumina-accent-purple rounded-xl px-4 py-2.5"
+            style={{ backgroundColor: "#7C6FF7", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 10 }}
             activeOpacity={0.7}
           >
             <Ionicons name="add" size={20} color="white" />
@@ -136,12 +136,12 @@ export default function HabitsScreen() {
         </View>
 
         {/* Today's Habits */}
-        <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Today</Text>
-        <View className="gap-2 mb-6">
+        <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Today</Text>
+        <View style={{ gap: 8, marginBottom: 24 }}>
           {habits.length === 0 ? (
-            <View className="bg-lumina-bg-card rounded-2xl p-6 items-center">
+            <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 24, alignItems: "center" }}>
               <Ionicons name="checkmark-circle-outline" size={40} color="#5A5A6E" />
-              <Text className="text-lumina-text-muted text-sm mt-3">No habits yet. Create one!</Text>
+              <Text style={{ color: "#5A5A6E", fontSize: 14, marginTop: 12 }}>No habits yet. Create one!</Text>
             </View>
           ) : (
             habits.map((habit) => {
@@ -151,15 +151,20 @@ export default function HabitsScreen() {
                   key={habit.id}
                   onPress={() => toggleHabit(habit.id, isCompleted)}
                   onLongPress={() => setShowAction(habit.id)}
-                  className={`bg-lumina-bg-card rounded-xl p-4 flex-row items-center justify-between ${
-                    isCompleted ? "opacity-60" : ""
-                  }`}
+                  style={{
+                    backgroundColor: "#1A1A24",
+                    borderRadius: 12,
+                    padding: 16,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    opacity: isCompleted ? 0.6 : 1,
+                  }}
                   activeOpacity={0.7}
                 >
-                  <View className="flex-row items-center gap-3 flex-1">
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: 12, flex: 1 }}>
                     <View
-                      className="w-10 h-10 rounded-full items-center justify-center"
-                      style={{ backgroundColor: `${habit.color || "#7C6FF7"}20` }}
+                      style={{ width: 40, height: 40, borderRadius: 20, alignItems: "center", justifyContent: "center", backgroundColor: `${habit.color || "#7C6FF7"}20` }}
                     >
                       <Ionicons
                         name={isCompleted ? "checkmark" : (habit.icon || "ellipse") as any}
@@ -167,25 +172,33 @@ export default function HabitsScreen() {
                         color={habit.color || "#7C6FF7"}
                       />
                     </View>
-                    <View className="flex-1">
+                    <View style={{ flex: 1 }}>
                       <Text
-                        className={`text-sm font-semibold ${
-                          isCompleted ? "text-lumina-text-muted line-through" : "text-lumina-text-primary"
-                        }`}
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "600",
+                          color: isCompleted ? "#5A5A6E" : "#FFFFFF",
+                          textDecorationLine: isCompleted ? "line-through" : "none",
+                        }}
                       >
                         {habit.name}
                       </Text>
-                      <Text className="text-lumina-text-muted text-xs capitalize">
+                      <Text style={{ color: "#5A5A6E", fontSize: 12, textTransform: "capitalize" }}>
                         {habit.time_of_day || "anytime"} · hold for more
                       </Text>
                     </View>
                   </View>
                   <View
-                    className={`w-6 h-6 rounded-full border-2 items-center justify-center ${
-                      isCompleted
-                        ? "bg-lumina-accent-teal border-lumina-accent-teal"
-                        : "border-lumina-text-muted/30"
-                    }`}
+                    style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: 12,
+                      borderWidth: 2,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: isCompleted ? "#4ECDC4" : "transparent",
+                      borderColor: isCompleted ? "#4ECDC4" : "rgba(90, 90, 110, 0.3)",
+                    }}
                   >
                     {isCompleted && <Ionicons name="checkmark" size={14} color="white" />}
                   </View>
@@ -196,8 +209,8 @@ export default function HabitsScreen() {
         </View>
 
         {/* Heatmap */}
-        <View className="bg-lumina-bg-card rounded-2xl p-4 mb-6">
-          <Text className="text-lumina-text-secondary text-xs font-medium mb-3">
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 24 }}>
+          <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>
             Habit DNA — Last 4 Weeks
           </Text>
           <Heatmap data={todayLogs} size={260} />
@@ -206,9 +219,9 @@ export default function HabitsScreen() {
 
       {/* Action Modal */}
       <Modal visible={!!showAction} transparent animationType="fade">
-        <View className="flex-1 bg-black/60 items-center justify-center px-8">
-          <View className="bg-lumina-bg-card rounded-2xl p-6 w-full">
-            <Text className="text-lumina-text-primary text-lg font-bold mb-4">Habit Actions</Text>
+        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.6)", alignItems: "center", justifyContent: "center", paddingHorizontal: 32 }}>
+          <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 24, width: "100%" }}>
+            <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "700", marginBottom: 16 }}>Habit Actions</Text>
             {[
               { icon: "create-outline", label: "Edit", onPress: () => openEdit(habits.find((h) => h.id === showAction)) },
               { icon: "trash-outline", label: "Delete", onPress: () => showAction && deleteHabit(showAction), color: "#FF6B6B" },
@@ -216,16 +229,16 @@ export default function HabitsScreen() {
               <TouchableOpacity
                 key={action.label}
                 onPress={action.onPress}
-                className="flex-row items-center gap-3 py-3.5 border-b border-lumina-bg-secondary"
+                style={{ flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: "#12121A" }}
               >
                 <Ionicons name={action.icon as any} size={20} color={action.color || "#A0A0B0"} />
-                <Text className={`text-sm ${action.color ? "text-lumina-accent-coral" : "text-lumina-text-primary"}`}>
+                <Text style={{ fontSize: 14, color: action.color ? "#FF6B6B" : "#FFFFFF" }}>
                   {action.label}
                 </Text>
               </TouchableOpacity>
             ))}
-            <TouchableOpacity onPress={() => setShowAction(null)} className="mt-4 py-3 rounded-xl bg-lumina-bg-secondary items-center">
-              <Text className="text-lumina-text-secondary font-medium">Cancel</Text>
+            <TouchableOpacity onPress={() => setShowAction(null)} style={{ marginTop: 16, paddingVertical: 12, borderRadius: 12, backgroundColor: "#12121A", alignItems: "center" }}>
+              <Text style={{ color: "#A0A0B0", fontWeight: "500" }}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -233,52 +246,63 @@ export default function HabitsScreen() {
 
       {/* Edit Modal */}
       <Modal visible={showEdit} transparent animationType="fade">
-        <View className="flex-1 bg-black/60 items-center justify-center px-8">
-          <View className="bg-lumina-bg-card rounded-2xl p-6 w-full">
-            <Text className="text-lumina-text-primary text-lg font-bold mb-4">Edit Habit</Text>
+        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.6)", alignItems: "center", justifyContent: "center", paddingHorizontal: 32 }}>
+          <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 24, width: "100%" }}>
+            <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "700", marginBottom: 16 }}>Edit Habit</Text>
             <TextInput
               value={editName}
               onChangeText={setEditName}
               placeholder="Habit name"
               placeholderTextColor="#5A5A6E"
-              className="bg-lumina-bg-secondary rounded-xl px-4 py-3 text-lumina-text-primary text-base mb-4"
+              style={{ backgroundColor: "#12121A", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, color: "#FFFFFF", fontSize: 16, marginBottom: 16 }}
             />
-            <Text className="text-lumina-text-secondary text-xs font-medium mb-2">Icon</Text>
-            <View className="flex-row gap-2 flex-wrap mb-4">
+            <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 8 }}>Icon</Text>
+            <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
               {HabitIcons.map((icon: any) => (
                 <TouchableOpacity
                   key={icon.name}
                   onPress={() => setEditIcon(icon.name)}
-                  className={`w-10 h-10 rounded-xl items-center justify-center ${
-                    editIcon === icon.name
-                      ? "bg-lumina-accent-purple/20 border border-lumina-accent-purple"
-                      : "bg-lumina-bg-secondary"
-                  }`}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 12,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: editIcon === icon.name ? "rgba(124, 111, 247, 0.2)" : "#12121A",
+                    borderWidth: editIcon === icon.name ? 1 : 0,
+                    borderColor: editIcon === icon.name ? "#7C6FF7" : undefined,
+                  }}
                 >
                   <Ionicons name={icon.name as any} size={18} color={editIcon === icon.name ? "#7C6FF7" : "#5A5A6E"} />
                 </TouchableOpacity>
               ))}
             </View>
-            <Text className="text-lumina-text-secondary text-xs font-medium mb-2">Time of Day</Text>
-            <View className="flex-row gap-2 mb-4">
+            <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 8 }}>Time of Day</Text>
+            <View style={{ flexDirection: "row", gap: 8, marginBottom: 16 }}>
               {["morning", "afternoon", "evening", "anytime"].map((t) => (
                 <TouchableOpacity
                   key={t}
                   onPress={() => setEditTime(t)}
-                  className={`flex-1 py-2.5 rounded-xl items-center ${
-                    editTime === t ? "bg-lumina-accent-purple/20 border border-lumina-accent-purple" : "bg-lumina-bg-secondary"
-                  }`}
+                  style={{
+                    flex: 1,
+                    paddingVertical: 10,
+                    borderRadius: 12,
+                    alignItems: "center",
+                    backgroundColor: editTime === t ? "rgba(124, 111, 247, 0.2)" : "#12121A",
+                    borderWidth: editTime === t ? 1 : 0,
+                    borderColor: editTime === t ? "#7C6FF7" : undefined,
+                  }}
                 >
-                  <Text className={`text-xs font-medium capitalize ${editTime === t ? "text-lumina-accent-purple" : "text-lumina-text-muted"}`}>{t}</Text>
+                  <Text style={{ fontSize: 12, fontWeight: "500", textTransform: "capitalize", color: editTime === t ? "#7C6FF7" : "#5A5A6E" }}>{t}</Text>
                 </TouchableOpacity>
               ))}
             </View>
-            <View className="flex-row gap-3">
-              <TouchableOpacity onPress={() => { setShowEdit(false); setEditHabit(null); }} className="flex-1 py-3 rounded-xl bg-lumina-bg-secondary items-center">
-                <Text className="text-lumina-text-secondary font-medium">Cancel</Text>
+            <View style={{ flexDirection: "row", gap: 12 }}>
+              <TouchableOpacity onPress={() => { setShowEdit(false); setEditHabit(null); }} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: "#12121A", alignItems: "center" }}>
+                <Text style={{ color: "#A0A0B0", fontWeight: "500" }}>Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={saveEdit} className="flex-1 py-3 rounded-xl bg-lumina-accent-purple items-center">
-                <Text className="text-white font-medium">Save</Text>
+              <TouchableOpacity onPress={saveEdit} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: "#7C6FF7", alignItems: "center" }}>
+                <Text style={{ color: "#FFFFFF", fontWeight: "500" }}>Save</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -287,52 +311,63 @@ export default function HabitsScreen() {
 
       {/* Create Habit Modal */}
       <Modal visible={showCreate} transparent animationType="fade">
-        <View className="flex-1 bg-black/60 items-center justify-center px-8">
-          <View className="bg-lumina-bg-card rounded-2xl p-6 w-full">
-            <Text className="text-lumina-text-primary text-lg font-bold mb-4">New Habit</Text>
+        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.6)", alignItems: "center", justifyContent: "center", paddingHorizontal: 32 }}>
+          <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 24, width: "100%" }}>
+            <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "700", marginBottom: 16 }}>New Habit</Text>
             <TextInput
               value={newHabitName}
               onChangeText={setNewHabitName}
               placeholder="Habit name"
               placeholderTextColor="#5A5A6E"
-              className="bg-lumina-bg-secondary rounded-xl px-4 py-3 text-lumina-text-primary text-base mb-4"
+              style={{ backgroundColor: "#12121A", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, color: "#FFFFFF", fontSize: 16, marginBottom: 16 }}
             />
-            <Text className="text-lumina-text-secondary text-xs font-medium mb-2">Icon</Text>
-            <View className="flex-row gap-2 flex-wrap mb-4">
+            <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 8 }}>Icon</Text>
+            <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
               {HabitIcons.map((icon: any) => (
                 <TouchableOpacity
                   key={icon.name}
                   onPress={() => setNewHabitIcon(icon.name)}
-                  className={`w-10 h-10 rounded-xl items-center justify-center ${
-                    newHabitIcon === icon.name
-                      ? "bg-lumina-accent-purple/20 border border-lumina-accent-purple"
-                      : "bg-lumina-bg-secondary"
-                  }`}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 12,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: newHabitIcon === icon.name ? "rgba(124, 111, 247, 0.2)" : "#12121A",
+                    borderWidth: newHabitIcon === icon.name ? 1 : 0,
+                    borderColor: newHabitIcon === icon.name ? "#7C6FF7" : undefined,
+                  }}
                 >
                   <Ionicons name={icon.name as any} size={18} color={newHabitIcon === icon.name ? "#7C6FF7" : "#5A5A6E"} />
                 </TouchableOpacity>
               ))}
             </View>
-            <Text className="text-lumina-text-secondary text-xs font-medium mb-2">Time of Day</Text>
-            <View className="flex-row gap-2 mb-4">
+            <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 8 }}>Time of Day</Text>
+            <View style={{ flexDirection: "row", gap: 8, marginBottom: 16 }}>
               {["morning", "afternoon", "evening", "anytime"].map((t) => (
                 <TouchableOpacity
                   key={t}
                   onPress={() => setNewHabitTime(t)}
-                  className={`flex-1 py-2.5 rounded-xl items-center ${
-                    newHabitTime === t ? "bg-lumina-accent-purple/20 border border-lumina-accent-purple" : "bg-lumina-bg-secondary"
-                  }`}
+                  style={{
+                    flex: 1,
+                    paddingVertical: 10,
+                    borderRadius: 12,
+                    alignItems: "center",
+                    backgroundColor: newHabitTime === t ? "rgba(124, 111, 247, 0.2)" : "#12121A",
+                    borderWidth: newHabitTime === t ? 1 : 0,
+                    borderColor: newHabitTime === t ? "#7C6FF7" : undefined,
+                  }}
                 >
-                  <Text className={`text-xs font-medium capitalize ${newHabitTime === t ? "text-lumina-accent-purple" : "text-lumina-text-muted"}`}>{t}</Text>
+                  <Text style={{ fontSize: 12, fontWeight: "500", textTransform: "capitalize", color: newHabitTime === t ? "#7C6FF7" : "#5A5A6E" }}>{t}</Text>
                 </TouchableOpacity>
               ))}
             </View>
-            <View className="flex-row gap-3">
-              <TouchableOpacity onPress={() => setShowCreate(false)} className="flex-1 py-3 rounded-xl bg-lumina-bg-secondary items-center">
-                <Text className="text-lumina-text-secondary font-medium">Cancel</Text>
+            <View style={{ flexDirection: "row", gap: 12 }}>
+              <TouchableOpacity onPress={() => setShowCreate(false)} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: "#12121A", alignItems: "center" }}>
+                <Text style={{ color: "#A0A0B0", fontWeight: "500" }}>Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={createHabit} className="flex-1 py-3 rounded-xl bg-lumina-accent-purple items-center">
-                <Text className="text-white font-medium">Create</Text>
+              <TouchableOpacity onPress={createHabit} style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: "#7C6FF7", alignItems: "center" }}>
+                <Text style={{ color: "#FFFFFF", fontWeight: "500" }}>Create</Text>
               </TouchableOpacity>
             </View>
           </View>

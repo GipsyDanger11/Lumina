@@ -9,7 +9,7 @@ interface ButtonProps {
   loading?: boolean;
   disabled?: boolean;
   icon?: React.ReactNode;
-  className?: string;
+  style?: any;
 }
 
 export function Button({
@@ -20,39 +20,45 @@ export function Button({
   loading = false,
   disabled = false,
   icon,
-  className = "",
+  style,
 }: ButtonProps) {
-  const baseStyle = "rounded-2xl flex-row items-center justify-center";
-  const sizeStyle = size === "sm" ? "px-4 py-2.5" : size === "lg" ? "px-8 py-4" : "px-6 py-3.5";
+  const sizeStyle = size === "sm" ? { paddingHorizontal: 16, paddingVertical: 10 } : size === "lg" ? { paddingHorizontal: 32, paddingVertical: 16 } : { paddingHorizontal: 24, paddingVertical: 14 };
+
   const variantStyle =
     variant === "primary"
-      ? "bg-lumina-accent-purple"
+      ? { backgroundColor: "#7C6FF7" }
       : variant === "secondary"
-      ? "bg-lumina-bg-card border border-lumina-text-muted/30"
-      : "bg-transparent";
+      ? { backgroundColor: "#1A1A24", borderWidth: 1, borderColor: "rgba(90, 90, 110, 0.3)" }
+      : { backgroundColor: "transparent" };
 
   const textStyle =
     variant === "primary"
-      ? "text-white font-semibold"
+      ? { color: "#FFFFFF", fontWeight: "600" as const }
       : variant === "secondary"
-      ? "text-lumina-text-primary font-medium"
-      : "text-lumina-accent-purple font-medium";
+      ? { color: "#FFFFFF", fontWeight: "500" as const }
+      : { color: "#7C6FF7", fontWeight: "500" as const };
 
-  const textSize = size === "sm" ? "text-sm" : size === "lg" ? "text-lg" : "text-base";
+  const textSize = size === "sm" ? { fontSize: 14 } : size === "lg" ? { fontSize: 18 } : { fontSize: 16 };
 
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled || loading}
       activeOpacity={0.7}
-      className={`${baseStyle} ${sizeStyle} ${variantStyle} ${disabled ? "opacity-50" : ""} ${className}`}
+      style={[
+        { borderRadius: 16, flexDirection: "row", alignItems: "center", justifyContent: "center" },
+        sizeStyle,
+        variantStyle,
+        disabled ? { opacity: 0.5 } : {},
+        style,
+      ]}
     >
       {loading ? (
         <ActivityIndicator color={variant === "primary" ? "#fff" : "#7C6FF7"} size="small" />
       ) : (
         <>
-          {icon && <View className="mr-2">{icon}</View>}
-          <Text className={`${textStyle} ${textSize}`}>{title}</Text>
+          {icon && <View style={{ marginRight: 8 }}>{icon}</View>}
+          <Text style={[textStyle, textSize]}>{title}</Text>
         </>
       )}
     </TouchableOpacity>

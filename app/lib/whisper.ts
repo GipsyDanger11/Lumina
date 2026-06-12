@@ -1,8 +1,8 @@
-const OPENAI_API_URL = "https://api.openai.com/v1/audio/transcriptions";
+const GROQ_API_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 
 export async function transcribeAudio(uri: string): Promise<string> {
-  const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
-  if (!apiKey) throw new Error("OpenAI API key not configured");
+  const apiKey = process.env.EXPO_PUBLIC_GROQ_API_KEY;
+  if (!apiKey) throw new Error("Groq API key not configured");
 
   const formData = new FormData();
   formData.append("file", {
@@ -10,10 +10,10 @@ export async function transcribeAudio(uri: string): Promise<string> {
     type: "audio/m4a",
     name: "recording.m4a",
   } as any);
-  formData.append("model", "whisper-1");
+  formData.append("model", "whisper-large-v3-turbo");
   formData.append("language", "en");
 
-  const response = await fetch(OPENAI_API_URL, {
+  const response = await fetch(GROQ_API_URL, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,

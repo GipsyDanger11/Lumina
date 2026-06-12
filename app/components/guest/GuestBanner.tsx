@@ -9,14 +9,14 @@ interface GuestBannerProps {
 
 export function GuestBanner({ onDismiss, onPress }: GuestBannerProps) {
   return (
-    <View className="bg-lumina-accent-purple/10 border border-lumina-accent-purple/20 rounded-xl px-4 py-3 mx-4 mb-4">
-      <View className="flex-row items-center justify-between">
-        <TouchableOpacity onPress={onPress} className="flex-1 mr-2" activeOpacity={0.7}>
-          <Text className="text-lumina-accent-purple text-sm font-medium">
+    <View style={{ backgroundColor: "rgba(124, 111, 247, 0.1)", borderWidth: 1, borderColor: "rgba(124, 111, 247, 0.2)", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, marginHorizontal: 16, marginBottom: 16 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+        <TouchableOpacity onPress={onPress} style={{ flex: 1, marginRight: 8 }} activeOpacity={0.7}>
+          <Text style={{ color: "#7C6FF7", fontSize: 14, fontWeight: "500" }}>
             Sign in to sync data, unlock voice mode & get insights
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onDismiss} className="p-1">
+        <TouchableOpacity onPress={onDismiss} style={{ padding: 4 }}>
           <Ionicons name="close" size={16} color="#7C6FF7" />
         </TouchableOpacity>
       </View>

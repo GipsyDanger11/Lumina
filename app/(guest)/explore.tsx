@@ -1,124 +1,134 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
+import React from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { useGuestData } from "../hooks/useGuestData";
-import { useUserStore } from "../store/useUserStore";
-import { HydrationCard } from "../components/cards/HydrationCard";
-import { SleepCard } from "../components/cards/SleepCard";
-import { HabitsCard } from "../components/cards/HabitsCard";
-import { NutritionCard } from "../components/cards/NutritionCard";
-import { GuestBanner } from "../components/guest/GuestBanner";
+import { useGuestStore } from "../store/useGuestStore";
+
+const QUICK_ACTIONS = [
+  { icon: "water-outline" as const, label: "Water", color: "#4ECDC4" },
+  { icon: "moon-outline" as const, label: "Sleep", color: "#7C6FF7" },
+  { icon: "fitness-outline" as const, label: "Habits", color: "#FF6B6B" },
+  { icon: "nutrition-outline" as const, label: "Nutrition", color: "#FFD93D" },
+];
 
 export default function ExploreScreen() {
-  const [showBanner, setShowBanner] = useState(true);
-  const { hydrationTotal, habits, habitLogs } = useGuestData();
-  const today = new Date().toISOString().split("T")[0];
-  const todayLogs = habitLogs[today] || {};
-  const completedHabits = Object.values(todayLogs).filter((v) => v === "completed").length;
+  const loadGuestData = useGuestStore((s) => s.loadGuestData);
 
-  const quickAddWater = async (amount: number) => {
-    const { useGuestStore } = await import("../store/useGuestStore");
-    useGuestStore.getState().addGuestWater({
-      amount_ml: amount,
-      beverage_type: "water",
-      timestamp: new Date().toISOString(),
-    });
-  };
+  React.useEffect(() => {
+    loadGuestData();
+  }, []);
 
   return (
-    <View className="flex-1 bg-lumina-bg-primary">
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View className="pt-16 px-6 pb-4">
-          <Text className="text-lumina-text-primary text-2xl font-bold">Explore Lumina</Text>
-          <Text className="text-lumina-text-secondary text-sm mt-1">
-            Sample data — sign in for the full experience
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0F" }}>
+      <View style={{ paddingTop: 60, paddingHorizontal: 24, paddingBottom: 24 }}>
+        <Text style={{ color: "#FFFFFF", fontSize: 28, fontWeight: "700", marginBottom: 4 }}>
+          Welcome to Lumina
+        </Text>
+        <Text style={{ color: "#A0A0B0", fontSize: 15 }}>
+          Here's a quick look at what you can track
+        </Text>
+      </View>
+
+      <View style={{ paddingHorizontal: 24, gap: 12, marginBottom: 32 }}>
+        {QUICK_ACTIONS.map((action) => (
+          <TouchableOpacity
+            key={action.label}
+            style={{
+              backgroundColor: "#1A1A24",
+              borderRadius: 16,
+              padding: 20,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 16,
+            }}
+            activeOpacity={0.7}
+            onPress={() => router.push("/(auth)/signup")}
+          >
+            <View
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 14,
+                backgroundColor: `${action.color}20`,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons name={action.icon} size={24} color={action.color} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "600" }}>{action.label}</Text>
+              <Text style={{ color: "#5A5A6E", fontSize: 13, marginTop: 2 }}>
+                Sign in to start tracking
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#5A5A6E" />
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <View
+        style={{
+          backgroundColor: "#1A1A24",
+          marginHorizontal: 24,
+          borderRadius: 16,
+          padding: 24,
+          marginBottom: 32,
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 16 }}>
+          <View
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 12,
+              backgroundColor: "rgba(124, 111, 247, 0.2)",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Ionicons name="bulb" size={22} color="#7C6FF7" />
+          </View>
+          <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "600" }}>
+            Create an account
           </Text>
         </View>
+        <Text style={{ color: "#A0A0B0", fontSize: 14, lineHeight: 22 }}>
+          Sign up to track health data, get AI insights, build streaks, and unlock your full health potential.
+        </Text>
+      </View>
 
-        {/* Guest Banner */}
-        {showBanner && (
-          <GuestBanner
-            onDismiss={() => setShowBanner(false)}
-            onPress={() => router.push("/(auth)/login")}
-          />
-        )}
+      <TouchableOpacity
+        onPress={() => router.push("/(auth)/signup")}
+        style={{
+          backgroundColor: "#7C6FF7",
+          marginHorizontal: 24,
+          borderRadius: 16,
+          paddingVertical: 16,
+          alignItems: "center",
+          marginBottom: 12,
+        }}
+        activeOpacity={0.8}
+      >
+        <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "600" }}>
+          Get Started Free
+        </Text>
+      </TouchableOpacity>
 
-        {/* Dashboard Cards */}
-        <View className="px-6 gap-4">
-          <View className="flex-row gap-3">
-            <HydrationCard currentMl={hydrationTotal} goalMl={2500} onPress={() => {}} />
-            <SleepCard hours={7.5} quality="good" onPress={() => {}} />
-          </View>
-
-          <View className="flex-row gap-3">
-            <HabitsCard completed={completedHabits} total={habits.length} onPress={() => {}} />
-            <NutritionCard mealsCount={3} onPress={() => {}} />
-          </View>
-
-          {/* Quick Water Add */}
-          <View className="bg-lumina-bg-card rounded-2xl p-4">
-            <Text className="text-lumina-text-secondary text-xs font-medium mb-3">
-              Quick Add Water
-            </Text>
-            <View className="flex-row gap-2 flex-wrap">
-              {[150, 250, 350, 500].map((amount) => (
-                <TouchableOpacity
-                  key={amount}
-                  onPress={() => quickAddWater(amount)}
-                  className="bg-lumina-bg-secondary border border-lumina-accent-teal/20 rounded-xl px-4 py-2.5"
-                  activeOpacity={0.7}
-                >
-                  <Text className="text-lumina-accent-teal text-sm font-medium">{amount}ml</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-
-          {/* AI Companion Preview */}
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert(
-                "AI Companion",
-                "Sign in to chat with LuminaAI — your personal health companion.",
-                [
-                  { text: "Not now", style: "cancel" },
-                  { text: "Sign In", onPress: () => router.push("/(auth)/login") },
-                ]
-              );
-            }}
-            className="bg-lumina-bg-card border border-lumina-accent-purple/20 rounded-2xl p-4"
-            activeOpacity={0.7}
-          >
-            <View className="flex-row items-center gap-3">
-              <View className="w-10 h-10 bg-lumina-accent-purple/20 rounded-full items-center justify-center">
-                <Ionicons name="sparkles" size={20} color="#7C6FF7" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-lumina-text-primary text-sm font-semibold">
-                  Chat with LuminaAI
-                </Text>
-                <Text className="text-lumina-text-muted text-xs">
-                  Your AI health companion — sign in required
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color="#5A5A6E" />
-            </View>
-          </TouchableOpacity>
-
-          {/* Sign In CTA */}
-          <TouchableOpacity
-            onPress={() => router.push("/(auth)/signup")}
-            className="bg-lumina-accent-purple rounded-2xl py-4 items-center"
-            activeOpacity={0.8}
-          >
-            <Text className="text-white text-base font-semibold">Sign Up Free</Text>
-          </TouchableOpacity>
-
-          <View className="h-8" />
-        </View>
-      </ScrollView>
-    </View>
+      <TouchableOpacity
+          onPress={() => router.push("/" as any)}
+        style={{
+          backgroundColor: "#1A1A24",
+          marginHorizontal: 24,
+          borderRadius: 16,
+          paddingVertical: 16,
+          alignItems: "center",
+          marginBottom: 48,
+        }}
+        activeOpacity={0.8}
+      >
+        <Text style={{ color: "#5A5A6E", fontSize: 14 }}>Back to intro</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }

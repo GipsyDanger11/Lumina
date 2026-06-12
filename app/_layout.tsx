@@ -7,7 +7,6 @@ import { useAuth } from "./hooks/useAuth";
 import { useUserStore } from "./store/useUserStore";
 import { getUserProfile } from "./lib/firebase";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import "../global.css";
 
 export default function RootLayout() {
   const { user, isLoading } = useAuth();

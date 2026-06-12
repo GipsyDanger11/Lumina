@@ -11,28 +11,32 @@ export function ChatBubble({ role, content, timestamp }: ChatBubbleProps) {
   const isUser = role === "user";
 
   return (
-    <View className={`mb-3 ${isUser ? "items-end" : "items-start"}`}>
+    <View style={{ marginBottom: 12, alignItems: isUser ? "flex-end" : "flex-start" }}>
       {!isUser && (
-        <View className="flex-row items-center gap-2 mb-1">
-          <View className="w-6 h-6 bg-lumina-accent-purple/20 rounded-full items-center justify-center">
-            <Text className="text-lumina-accent-purple text-xs font-bold">L</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 4 }}>
+          <View style={{ width: 24, height: 24, backgroundColor: "rgba(124, 111, 247, 0.2)", borderRadius: 12, alignItems: "center", justifyContent: "center" }}>
+            <Text style={{ color: "#7C6FF7", fontSize: 12, fontWeight: "700" }}>L</Text>
           </View>
-          <Text className="text-lumina-text-muted text-xs">LuminaAI</Text>
+          <Text style={{ color: "#5A5A6E", fontSize: 12 }}>LuminaAI</Text>
         </View>
       )}
       <View
-        className={`max-w-[80%] px-4 py-3 rounded-2xl ${
-          isUser
-            ? "bg-lumina-accent-purple rounded-br-md"
-            : "bg-lumina-bg-card rounded-bl-md"
-        }`}
+        style={{
+          maxWidth: "80%",
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          borderRadius: 16,
+          backgroundColor: isUser ? "#7C6FF7" : "#1A1A24",
+          borderBottomRightRadius: isUser ? 4 : 16,
+          borderBottomLeftRadius: isUser ? 16 : 4,
+        }}
       >
-        <Text className={`text-sm leading-5 ${isUser ? "text-white" : "text-lumina-text-primary"}`}>
+        <Text style={{ fontSize: 14, lineHeight: 20, color: isUser ? "#FFFFFF" : "#FFFFFF" }}>
           {content}
         </Text>
       </View>
       {timestamp && (
-        <Text className="text-lumina-text-muted text-[10px] mt-1 px-1">{timestamp}</Text>
+        <Text style={{ color: "#5A5A6E", fontSize: 10, marginTop: 4, paddingHorizontal: 4 }}>{timestamp}</Text>
       )}
     </View>
   );

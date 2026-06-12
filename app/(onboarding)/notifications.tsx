@@ -44,36 +44,36 @@ export default function NotificationsScreen() {
   };
 
   return (
-    <View className="flex-1 bg-lumina-bg-primary">
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="px-8 pt-16">
-          <TouchableOpacity onPress={() => router.back()} className="mb-6">
+    <View style={{ flex: 1, backgroundColor: "#0A0A0F" }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={{ paddingHorizontal: 32, paddingTop: 64 }}>
+          <TouchableOpacity onPress={() => router.back()} style={{ marginBottom: 24 }}>
             <Ionicons name="chevron-back" size={24} color="#A0A0B0" />
           </TouchableOpacity>
 
-          <View className="bg-lumina-bg-secondary rounded-full h-1 mb-8">
-            <View className="bg-lumina-accent-purple rounded-full h-full w-full" />
+          <View style={{ backgroundColor: "#12121A", borderRadius: 999, height: 4, marginBottom: 32 }}>
+            <View style={{ backgroundColor: "#7C6FF7", borderRadius: 999, height: "100%", width: "100%" }} />
           </View>
 
-          <Text className="text-lumina-text-primary text-3xl font-bold mb-2">
+          <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "700", marginBottom: 8 }}>
             Stay on track
           </Text>
-          <Text className="text-lumina-text-secondary text-base mb-8">
+          <Text style={{ color: "#A0A0B0", fontSize: 16, marginBottom: 32 }}>
             Step 4 of 4 — Choose your reminders
           </Text>
 
-          <View className="gap-4">
+          <View style={{ gap: 16 }}>
             {/* Hydration */}
-            <View className="bg-lumina-bg-card rounded-xl p-4 flex-row items-center justify-between">
-              <View className="flex-row items-center gap-3">
-                <View className="w-10 h-10 bg-lumina-accent-teal/20 rounded-full items-center justify-center">
+            <View style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+                <View style={{ width: 40, height: 40, backgroundColor: "rgba(78, 205, 196, 0.2)", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
                   <Ionicons name="water" size={20} color="#4ECDC4" />
                 </View>
                 <View>
-                  <Text className="text-lumina-text-primary text-sm font-semibold">
+                  <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>
                     Hydration Reminders
                   </Text>
-                  <Text className="text-lumina-text-muted text-xs">Remind to drink water</Text>
+                  <Text style={{ color: "#5A5A6E", fontSize: 12 }}>Remind to drink water</Text>
                 </View>
               </View>
               <Switch
@@ -85,16 +85,16 @@ export default function NotificationsScreen() {
             </View>
 
             {/* Sleep */}
-            <View className="bg-lumina-bg-card rounded-xl p-4 flex-row items-center justify-between">
-              <View className="flex-row items-center gap-3">
-                <View className="w-10 h-10 bg-lumina-accent-purple/20 rounded-full items-center justify-center">
+            <View style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+                <View style={{ width: 40, height: 40, backgroundColor: "rgba(124, 111, 247, 0.2)", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
                   <Ionicons name="moon" size={20} color="#7C6FF7" />
                 </View>
                 <View>
-                  <Text className="text-lumina-text-primary text-sm font-semibold">
+                  <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>
                     Sleep Reminders
                   </Text>
-                  <Text className="text-lumina-text-muted text-xs">Remind to log sleep</Text>
+                  <Text style={{ color: "#5A5A6E", fontSize: 12 }}>Remind to log sleep</Text>
                 </View>
               </View>
               <Switch
@@ -106,16 +106,16 @@ export default function NotificationsScreen() {
             </View>
 
             {/* Habits */}
-            <View className="bg-lumina-bg-card rounded-xl p-4 flex-row items-center justify-between">
-              <View className="flex-row items-center gap-3">
-                <View className="w-10 h-10 bg-lumina-accent-coral/20 rounded-full items-center justify-center">
+            <View style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+                <View style={{ width: 40, height: 40, backgroundColor: "rgba(255, 107, 107, 0.2)", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
                   <Ionicons name="checkmark-circle" size={20} color="#FF6B6B" />
                 </View>
                 <View>
-                  <Text className="text-lumina-text-primary text-sm font-semibold">
+                  <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>
                     Habit Reminders
                   </Text>
-                  <Text className="text-lumina-text-muted text-xs">Remind about daily habits</Text>
+                  <Text style={{ color: "#5A5A6E", fontSize: 12 }}>Remind about daily habits</Text>
                 </View>
               </View>
               <Switch
@@ -127,16 +127,16 @@ export default function NotificationsScreen() {
             </View>
 
             {/* Insights */}
-            <View className="bg-lumina-bg-card rounded-xl p-4 flex-row items-center justify-between">
-              <View className="flex-row items-center gap-3">
-                <View className="w-10 h-10 bg-lumina-warning/20 rounded-full items-center justify-center">
+            <View style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+                <View style={{ width: 40, height: 40, backgroundColor: "rgba(255, 217, 61, 0.2)", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
                   <Ionicons name="sparkles" size={20} color="#FFD93D" />
                 </View>
                 <View>
-                  <Text className="text-lumina-text-primary text-sm font-semibold">
+                  <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>
                     Daily Insights
                   </Text>
-                  <Text className="text-lumina-text-muted text-xs">Get personalized tips</Text>
+                  <Text style={{ color: "#5A5A6E", fontSize: 12 }}>Get personalized tips</Text>
                 </View>
               </View>
               <Switch
@@ -148,7 +148,7 @@ export default function NotificationsScreen() {
             </View>
           </View>
 
-          <Button title="Complete Setup" onPress={handleComplete} className="mt-8 mb-8" />
+          <Button title="Complete Setup" onPress={handleComplete} style={{ marginTop: 32, marginBottom: 32 }} />
         </View>
       </ScrollView>
     </View>

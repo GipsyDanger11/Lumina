@@ -76,21 +76,21 @@ export function LuminaOrb({ state = "idle", size = 120 }: LuminaOrbProps) {
 
   const pulseStyle = useAnimatedStyle(() => ({
     transform: [{ scale: pulse.value }],
-  }));
+  }), [pulse]);
 
   const ripple1Style = useAnimatedStyle(() => ({
     opacity: interpolate(ripple1.value, [0, 1], [0.6, 0]),
     transform: [{ scale: interpolate(ripple1.value, [0, 1], [1, 2.5]) }],
-  }));
+  }), [ripple1]);
 
   const ripple2Style = useAnimatedStyle(() => ({
     opacity: interpolate(ripple2.value, [0, 1], [0.4, 0]),
     transform: [{ scale: interpolate(ripple2.value, [0, 1], [1, 2]) }],
-  }));
+  }), [ripple2]);
 
   const processingStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotation.value}deg` }],
-  }));
+  }), [rotation]);
 
   return (
     <View style={{ width: size * 2.5, height: size * 2.5, alignItems: "center", justifyContent: "center" }}>

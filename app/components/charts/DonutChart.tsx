@@ -17,7 +17,7 @@ export function DonutChart({ segments, size = 120, strokeWidth = 12 }: DonutChar
   let cumulative = 0;
 
   return (
-    <View className="items-center">
+    <View style={{ alignItems: "center" }}>
       <Svg width={size} height={size}>
         <G rotation="-90" origin={`${center}, ${center}`}>
           {segments.map((segment, i) => {
@@ -41,11 +41,11 @@ export function DonutChart({ segments, size = 120, strokeWidth = 12 }: DonutChar
           })}
         </G>
       </Svg>
-      <View className="flex-row gap-4 mt-3">
+      <View style={{ flexDirection: "row", gap: 16, marginTop: 12 }}>
         {segments.map((segment, i) => (
-          <View key={i} className="flex-row items-center gap-1">
-            <View style={{ backgroundColor: segment.color }} className="w-2 h-2 rounded-full" />
-            <Text className="text-lumina-text-secondary text-xs">{segment.label}</Text>
+          <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            <View style={{ backgroundColor: segment.color, width: 8, height: 8, borderRadius: 4 }} />
+            <Text style={{ color: "#A0A0B0", fontSize: 12 }}>{segment.label}</Text>
           </View>
         ))}
       </View>

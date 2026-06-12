@@ -74,50 +74,54 @@ export default function NutritionScreen() {
   }));
 
   return (
-    <ScrollView className="flex-1 bg-lumina-bg-primary" showsVerticalScrollIndicator={false}>
-      <View className="pt-16 px-6">
-        <Text className="text-lumina-text-primary text-2xl font-bold mb-6">Nutrition</Text>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0F" }} showsVerticalScrollIndicator={false}>
+      <View style={{ paddingTop: 64, paddingHorizontal: 24 }}>
+        <Text style={{ color: "#FFFFFF", fontSize: 24, fontWeight: "700", marginBottom: 24 }}>Nutrition</Text>
 
         {/* Macro Overview */}
-        <View className="bg-lumina-bg-card rounded-2xl p-4 mb-6">
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 24 }}>
           <DonutChart segments={mealCounts} size={140} />
-          <Text className="text-lumina-text-secondary text-sm mt-3 text-center">
+          <Text style={{ color: "#A0A0B0", fontSize: 14, marginTop: 12, textAlign: "center" }}>
             {meals.length} meals logged today
           </Text>
           {meals.length > 0 && (
-            <View className="flex-row justify-between mt-4 pt-3 border-t border-lumina-bg-secondary">
-              <View className="items-center flex-1">
-                <Text className="text-lumina-accent-coral text-sm font-bold">{totalCalories}</Text>
-                <Text className="text-lumina-text-muted text-[10px]">cal</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 16, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#12121A" }}>
+              <View style={{ alignItems: "center", flex: 1 }}>
+                <Text style={{ color: "#FF6B6B", fontSize: 14, fontWeight: "700" }}>{totalCalories}</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 10 }}>cal</Text>
               </View>
-              <View className="items-center flex-1">
-                <Text className="text-lumina-accent-teal text-sm font-bold">{totalProtein}g</Text>
-                <Text className="text-lumina-text-muted text-[10px]">protein</Text>
+              <View style={{ alignItems: "center", flex: 1 }}>
+                <Text style={{ color: "#4ECDC4", fontSize: 14, fontWeight: "700" }}>{totalProtein}g</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 10 }}>protein</Text>
               </View>
-              <View className="items-center flex-1">
-                <Text className="text-lumina-warning text-sm font-bold">{totalCarbs}g</Text>
-                <Text className="text-lumina-text-muted text-[10px]">carbs</Text>
+              <View style={{ alignItems: "center", flex: 1 }}>
+                <Text style={{ color: "#FFD93D", fontSize: 14, fontWeight: "700" }}>{totalCarbs}g</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 10 }}>carbs</Text>
               </View>
-              <View className="items-center flex-1">
-                <Text className="text-lumina-accent-purple text-sm font-bold">{totalFat}g</Text>
-                <Text className="text-lumina-text-muted text-[10px]">fat</Text>
+              <View style={{ alignItems: "center", flex: 1 }}>
+                <Text style={{ color: "#7C6FF7", fontSize: 14, fontWeight: "700" }}>{totalFat}g</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 10 }}>fat</Text>
               </View>
             </View>
           )}
         </View>
 
         {/* Log Meal */}
-        <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Log a Meal</Text>
-        <View className="flex-row gap-2 mb-4">
+        <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Log a Meal</Text>
+        <View style={{ flexDirection: "row", gap: 8, marginBottom: 16 }}>
           {MEAL_TYPES.map((meal) => (
             <TouchableOpacity
               key={meal.key}
               onPress={() => setSelectedMeal(selectedMeal === meal.key ? null : meal.key)}
-              className={`flex-1 py-3 rounded-xl border items-center ${
-                selectedMeal === meal.key
-                  ? "bg-lumina-accent-purple/20 border-lumina-accent-purple"
-                  : "bg-lumina-bg-card border-lumina-text-muted/20"
-              }`}
+              style={{
+                flex: 1,
+                paddingVertical: 12,
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: selectedMeal === meal.key ? "#7C6FF7" : "rgba(90, 90, 110, 0.2)",
+                alignItems: "center",
+                backgroundColor: selectedMeal === meal.key ? "rgba(124, 111, 247, 0.2)" : "#1A1A24",
+              }}
               activeOpacity={0.7}
             >
               <Ionicons
@@ -126,9 +130,12 @@ export default function NutritionScreen() {
                 color={selectedMeal === meal.key ? "#7C6FF7" : "#5A5A6E"}
               />
               <Text
-                className={`text-[10px] font-medium mt-1 ${
-                  selectedMeal === meal.key ? "text-lumina-accent-purple" : "text-lumina-text-muted"
-                }`}
+                style={{
+                  fontSize: 10,
+                  fontWeight: "500",
+                  marginTop: 4,
+                  color: selectedMeal === meal.key ? "#7C6FF7" : "#5A5A6E",
+                }}
               >
                 {meal.label}
               </Text>
@@ -137,73 +144,78 @@ export default function NutritionScreen() {
         </View>
 
         {selectedMeal && (
-          <View className="bg-lumina-bg-card rounded-xl p-4 mb-6">
+          <View style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, marginBottom: 24 }}>
             <TextInput
               value={description}
               onChangeText={setDescription}
               placeholder={`What did you have for ${selectedMeal}?`}
               placeholderTextColor="#5A5A6E"
-              className="bg-lumina-bg-secondary rounded-xl px-4 py-3 text-lumina-text-primary text-base mb-3"
+              style={{ backgroundColor: "#12121A", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, color: "#FFFFFF", fontSize: 16, marginBottom: 12 }}
               multiline
             />
-            <View className="flex-row gap-2 mb-3">
-              <View className="flex-1">
-                <Text className="text-lumina-text-muted text-[10px] mb-1">Calories</Text>
+            <View style={{ flexDirection: "row", gap: 8, marginBottom: 12 }}>
+              <View style={{ flex: 1 }}>
+                <Text style={{ color: "#5A5A6E", fontSize: 10, marginBottom: 4 }}>Calories</Text>
                 <TextInput
                   value={calories}
                   onChangeText={setCalories}
                   placeholder="0"
                   placeholderTextColor="#5A5A6E"
                   keyboardType="numeric"
-                  className="bg-lumina-bg-secondary rounded-xl px-3 py-2 text-lumina-text-primary text-sm"
+                  style={{ backgroundColor: "#12121A", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, color: "#FFFFFF", fontSize: 14 }}
                 />
               </View>
-              <View className="flex-1">
-                <Text className="text-lumina-text-muted text-[10px] mb-1">Protein (g)</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={{ color: "#5A5A6E", fontSize: 10, marginBottom: 4 }}>Protein (g)</Text>
                 <TextInput
                   value={protein}
                   onChangeText={setProtein}
                   placeholder="0"
                   placeholderTextColor="#5A5A6E"
                   keyboardType="numeric"
-                  className="bg-lumina-bg-secondary rounded-xl px-3 py-2 text-lumina-text-primary text-sm"
+                  style={{ backgroundColor: "#12121A", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, color: "#FFFFFF", fontSize: 14 }}
                 />
               </View>
             </View>
-            <View className="flex-row gap-2 mb-3">
-              <View className="flex-1">
-                <Text className="text-lumina-text-muted text-[10px] mb-1">Carbs (g)</Text>
+            <View style={{ flexDirection: "row", gap: 8, marginBottom: 12 }}>
+              <View style={{ flex: 1 }}>
+                <Text style={{ color: "#5A5A6E", fontSize: 10, marginBottom: 4 }}>Carbs (g)</Text>
                 <TextInput
                   value={carbs}
                   onChangeText={setCarbs}
                   placeholder="0"
                   placeholderTextColor="#5A5A6E"
                   keyboardType="numeric"
-                  className="bg-lumina-bg-secondary rounded-xl px-3 py-2 text-lumina-text-primary text-sm"
+                  style={{ backgroundColor: "#12121A", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, color: "#FFFFFF", fontSize: 14 }}
                 />
               </View>
-              <View className="flex-1">
-                <Text className="text-lumina-text-muted text-[10px] mb-1">Fat (g)</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={{ color: "#5A5A6E", fontSize: 10, marginBottom: 4 }}>Fat (g)</Text>
                 <TextInput
                   value={fat}
                   onChangeText={setFat}
                   placeholder="0"
                   placeholderTextColor="#5A5A6E"
                   keyboardType="numeric"
-                  className="bg-lumina-bg-secondary rounded-xl px-3 py-2 text-lumina-text-primary text-sm"
+                  style={{ backgroundColor: "#12121A", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, color: "#FFFFFF", fontSize: 14 }}
                 />
               </View>
             </View>
             <TouchableOpacity
               onPress={logMeal}
-              className={`py-3 rounded-xl items-center ${
-                description.trim() ? "bg-lumina-accent-purple" : "bg-lumina-bg-secondary"
-              }`}
+              style={{
+                paddingVertical: 12,
+                borderRadius: 12,
+                alignItems: "center",
+                backgroundColor: description.trim() ? "#7C6FF7" : "#12121A",
+              }}
             >
               <Text
-                className={`text-sm font-semibold ${
-                  description.trim() ? "text-white" : "text-lumina-text-muted"
-                }`}
+                style={{
+                  fontSize: 14,
+                  fontWeight: "600",
+                  color: description.trim() ? "#FFFFFF" : "#5A5A6E",
+                }}
               >
                 Log Meal
               </Text>
@@ -212,24 +224,24 @@ export default function NutritionScreen() {
         )}
 
         {/* Today's Meals */}
-        <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Today's Meals</Text>
+        <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Today's Meals</Text>
         {meals.length === 0 ? (
-          <View className="bg-lumina-bg-card rounded-2xl p-6 items-center mb-6">
+          <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 24, alignItems: "center", marginBottom: 24 }}>
             <Ionicons name="restaurant-outline" size={40} color="#5A5A6E" />
-            <Text className="text-lumina-text-muted text-sm mt-3">No meals logged yet</Text>
+            <Text style={{ color: "#5A5A6E", fontSize: 14, marginTop: 12 }}>No meals logged yet</Text>
           </View>
         ) : (
-          <View className="gap-2 mb-6">
+          <View style={{ gap: 8, marginBottom: 24 }}>
             {meals.map((meal, i) => (
-              <View key={i} className="bg-lumina-bg-card rounded-xl p-4 flex-row items-center gap-3">
-                <View className="w-8 h-8 bg-lumina-warning/20 rounded-lg items-center justify-center">
+              <View key={i} style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", gap: 12 }}>
+                <View style={{ width: 32, height: 32, backgroundColor: "rgba(255, 217, 61, 0.2)", borderRadius: 8, alignItems: "center", justifyContent: "center" }}>
                   <Ionicons name="restaurant" size={14} color="#FFD93D" />
                 </View>
-                <View className="flex-1">
-                  <Text className="text-lumina-text-primary text-sm font-medium capitalize">{meal.meal_type}</Text>
-                  <Text className="text-lumina-text-muted text-xs">{meal.description}</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "500", textTransform: "capitalize" }}>{meal.meal_type}</Text>
+                  <Text style={{ color: "#5A5A6E", fontSize: 12 }}>{meal.description}</Text>
                   {(meal.calories || meal.protein_g || meal.carbs_g || meal.fat_g) && (
-                    <Text className="text-lumina-text-muted text-[10px] mt-0.5">
+                    <Text style={{ color: "#5A5A6E", fontSize: 10, marginTop: 2 }}>
                       {meal.calories ? `${meal.calories}cal` : ""}
                       {meal.protein_g ? ` · ${meal.protein_g}g protein` : ""}
                       {meal.carbs_g ? ` · ${meal.carbs_g}g carbs` : ""}

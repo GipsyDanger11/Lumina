@@ -73,36 +73,35 @@ export default function SleepScreen() {
   const hoursNum = parseFloat(hours) || 0;
 
   return (
-    <ScrollView className="flex-1 bg-lumina-bg-primary" showsVerticalScrollIndicator={false}>
-      <View className="pt-16 px-6">
-        <Text className="text-lumina-text-primary text-2xl font-bold mb-6">Sleep</Text>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0F" }} showsVerticalScrollIndicator={false}>
+      <View style={{ paddingTop: 64, paddingHorizontal: 24 }}>
+        <Text style={{ color: "#FFFFFF", fontSize: 24, fontWeight: "700", marginBottom: 24 }}>Sleep</Text>
 
         {/* Current Sleep */}
-        <View className="bg-lumina-bg-card rounded-2xl p-6 mb-6">
-          <View className="items-center">
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 24, marginBottom: 24 }}>
+          <View style={{ alignItems: "center" }}>
             <Ionicons name="moon" size={48} color="#7C6FF7" />
             <Text
-              className="text-lumina-text-primary text-5xl font-bold mt-4"
-              style={{ fontVariant: ["tabular-nums"] }}
+              style={{ color: "#FFFFFF", fontSize: 48, fontWeight: "700", marginTop: 16, fontVariant: ["tabular-nums"] }}
             >
               {sleep?.hours || "--"}
             </Text>
-            <Text className="text-lumina-text-muted text-sm mt-1">hours last night</Text>
+            <Text style={{ color: "#5A5A6E", fontSize: 14, marginTop: 4 }}>hours last night</Text>
             {sleep?.quality && (
-              <View className="mt-2 bg-lumina-accent-purple/20 rounded-full px-4 py-1">
-                <Text className="text-lumina-accent-purple text-sm font-medium capitalize">
+              <View style={{ marginTop: 8, backgroundColor: "rgba(124, 111, 247, 0.2)", borderRadius: 999, paddingHorizontal: 16, paddingVertical: 4 }}>
+                <Text style={{ color: "#7C6FF7", fontSize: 14, fontWeight: "500", textTransform: "capitalize" }}>
                   {sleep.quality}
                 </Text>
               </View>
             )}
-            <View className="flex-row gap-6 mt-4 pt-3 border-t border-lumina-bg-secondary w-full justify-center">
-              <View className="items-center">
-                <Text className="text-lumina-accent-purple text-sm font-bold">{avgHours}h</Text>
-                <Text className="text-lumina-text-muted text-[10px]">7-day avg</Text>
+            <View style={{ flexDirection: "row", gap: 24, marginTop: 16, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#12121A", width: "100%", justifyContent: "center" }}>
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ color: "#7C6FF7", fontSize: 14, fontWeight: "700" }}>{avgHours}h</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 10 }}>7-day avg</Text>
               </View>
-              <View className="items-center">
-                <Text className="text-lumina-accent-purple text-sm font-bold">{history.length}</Text>
-                <Text className="text-lumina-text-muted text-[10px]">days logged</Text>
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ color: "#7C6FF7", fontSize: 14, fontWeight: "700" }}>{history.length}</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 10 }}>days logged</Text>
               </View>
             </View>
           </View>
@@ -110,25 +109,26 @@ export default function SleepScreen() {
 
         {/* Sleep History */}
         {history.length > 0 && (
-          <View className="bg-lumina-bg-card rounded-2xl p-4 mb-6">
-            <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Past 7 Days</Text>
-            <View className="flex-row justify-between items-end h-24">
+          <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 24 }}>
+            <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Past 7 Days</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", height: 96 }}>
               {history.map((entry, i) => {
                 const maxH = 10;
                 const barH = Math.min((entry.hours / maxH) * 80, 80);
                 const dayLabel = new Date(entry.date).toLocaleDateString("en-US", { weekday: "short" });
                 return (
-                  <View key={i} className="items-center flex-1">
+                  <View key={i} style={{ alignItems: "center", flex: 1 }}>
                     <View
-                      className="w-6 rounded-lg"
                       style={{
+                        width: 24,
+                        borderRadius: 8,
                         height: barH,
                         backgroundColor: entry.quality === "poor" ? "#FF6B6B" : entry.quality === "okay" ? "#FFD93D" : entry.quality === "good" ? "#4ECDC4" : "#7C6FF7",
                         opacity: 0.8,
                       }}
                     />
-                    <Text className="text-lumina-text-muted text-[10px] mt-1">{dayLabel}</Text>
-                    <Text className="text-lumina-text-muted text-[10px]">{entry.hours}h</Text>
+                    <Text style={{ color: "#5A5A6E", fontSize: 10, marginTop: 4 }}>{dayLabel}</Text>
+                    <Text style={{ color: "#5A5A6E", fontSize: 10 }}>{entry.hours}h</Text>
                   </View>
                 );
               })}
@@ -137,24 +137,29 @@ export default function SleepScreen() {
         )}
 
         {/* Log Sleep */}
-        <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Log Sleep</Text>
-        <View className="bg-lumina-bg-card rounded-2xl p-4 mb-6">
-          <Text className="text-lumina-text-primary text-sm font-medium mb-3">Hours</Text>
-          <View className="flex-row gap-2 mb-4 flex-wrap">
+        <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Log Sleep</Text>
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 24 }}>
+          <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "500", marginBottom: 12 }}>Hours</Text>
+          <View style={{ flexDirection: "row", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
             {[5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 10].map((h) => (
               <TouchableOpacity
                 key={h}
                 onPress={() => setHours(h.toString())}
-                className={`px-4 py-2.5 rounded-xl border ${
-                  hours === h.toString()
-                    ? "bg-lumina-accent-purple/20 border-lumina-accent-purple"
-                    : "bg-lumina-bg-secondary border-lumina-text-muted/20"
-                }`}
+                style={{
+                  paddingHorizontal: 16,
+                  paddingVertical: 10,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: hours === h.toString() ? "#7C6FF7" : "rgba(90, 90, 110, 0.2)",
+                  backgroundColor: hours === h.toString() ? "rgba(124, 111, 247, 0.2)" : "#12121A",
+                }}
               >
                 <Text
-                  className={`text-sm font-medium ${
-                    hours === h.toString() ? "text-lumina-accent-purple" : "text-lumina-text-secondary"
-                  }`}
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "500",
+                    color: hours === h.toString() ? "#7C6FF7" : "#A0A0B0",
+                  }}
                 >
                   {h}h
                 </Text>
@@ -162,23 +167,28 @@ export default function SleepScreen() {
             ))}
           </View>
 
-          <Text className="text-lumina-text-primary text-sm font-medium mb-3">Quality</Text>
-          <View className="flex-row gap-2 mb-4">
+          <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "500", marginBottom: 12 }}>Quality</Text>
+          <View style={{ flexDirection: "row", gap: 8, marginBottom: 16 }}>
             {SleepQualities.map((q: any) => (
               <TouchableOpacity
                 key={q.value}
                 onPress={() => setQuality(q.value)}
-                className={`flex-1 py-3 rounded-xl border items-center ${
-                  quality === q.value
-                    ? "border-lumina-accent-purple"
-                    : "bg-lumina-bg-card border-lumina-text-muted/20"
-                }`}
-                style={quality === q.value ? { backgroundColor: `${q.color}20` } : {}}
+                style={{
+                  flex: 1,
+                  paddingVertical: 12,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: quality === q.value ? "#7C6FF7" : "rgba(90, 90, 110, 0.2)",
+                  alignItems: "center",
+                  backgroundColor: quality === q.value ? `${q.color}20` : "#1A1A24",
+                }}
               >
                 <Text
-                  className={`text-xs font-medium ${
-                    quality === q.value ? "text-lumina-text-primary" : "text-lumina-text-muted"
-                  }`}
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "500",
+                    color: quality === q.value ? "#FFFFFF" : "#5A5A6E",
+                  }}
                 >
                   {q.label}
                 </Text>
@@ -188,15 +198,20 @@ export default function SleepScreen() {
 
           <TouchableOpacity
             onPress={saveSleep}
-            className={`py-3.5 rounded-xl items-center ${
-              hours && quality ? "bg-lumina-accent-purple" : "bg-lumina-bg-secondary"
-            }`}
+            style={{
+              paddingVertical: 14,
+              borderRadius: 12,
+              alignItems: "center",
+              backgroundColor: hours && quality ? "#7C6FF7" : "#12121A",
+            }}
             activeOpacity={0.7}
           >
             <Text
-              className={`text-sm font-semibold ${
-                hours && quality ? "text-white" : "text-lumina-text-muted"
-              }`}
+              style={{
+                fontSize: 14,
+                fontWeight: "600",
+                color: hours && quality ? "#FFFFFF" : "#5A5A6E",
+              }}
             >
               {saved ? "Saved!" : "Save Sleep Log"}
             </Text>

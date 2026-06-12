@@ -6,7 +6,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./app/*"]
-    }
+    },
+    "ignoreDeprecations": "5.0"
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "nativewind-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "nativewind-env.d.ts", "app/**/*"],
+  "exclude": ["node_modules", "App.tsx", "__tests__/**"]
 }

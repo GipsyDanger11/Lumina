@@ -56,25 +56,25 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 bg-lumina-bg-primary"
+      style={{ flex: 1, backgroundColor: "#0A0A0F" }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-        <View className="flex-1 px-8 pt-16">
+        <View style={{ flex: 1, paddingHorizontal: 32, paddingTop: 64 }}>
           {/* Back */}
-          <TouchableOpacity onPress={() => router.back()} className="mb-8">
+          <TouchableOpacity onPress={() => router.back()} style={{ marginBottom: 32 }}>
             <Ionicons name="chevron-back" size={24} color="#A0A0B0" />
           </TouchableOpacity>
 
           {/* Header */}
-          <Text className="text-lumina-text-primary text-3xl font-bold mb-2">Welcome back</Text>
-          <Text className="text-lumina-text-secondary text-base mb-8">
+          <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "700", marginBottom: 8 }}>Welcome back</Text>
+          <Text style={{ color: "#A0A0B0", fontSize: 16, marginBottom: 32 }}>
             Sign in to continue to Lumina
           </Text>
 
           {/* Error */}
           {errors.general && (
-            <View className="bg-lumina-accent-coral/10 border border-lumina-accent-coral/20 rounded-xl px-4 py-3 mb-4">
-              <Text className="text-lumina-accent-coral text-sm">{errors.general}</Text>
+            <View style={{ backgroundColor: "rgba(255, 107, 107, 0.1)", borderWidth: 1, borderColor: "rgba(255, 107, 107, 0.2)", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, marginBottom: 16 }}>
+              <Text style={{ color: "#FF6B6B", fontSize: 14 }}>{errors.general}</Text>
             </View>
           )}
 
@@ -98,13 +98,13 @@ export default function LoginScreen() {
             secureTextEntry
           />
 
-          <Button title="Sign In" onPress={handleLogin} loading={loading} className="mt-2" />
+          <Button title="Sign In" onPress={handleLogin} loading={loading} style={{ marginTop: 8 }} />
 
           {/* Divider */}
-          <View className="flex-row items-center gap-4 my-6">
-            <View className="flex-1 h-px bg-lumina-text-muted/20" />
-            <Text className="text-lumina-text-muted text-sm">or</Text>
-            <View className="flex-1 h-px bg-lumina-text-muted/20" />
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 16, marginVertical: 24 }}>
+            <View style={{ flex: 1, height: 1, backgroundColor: "rgba(90, 90, 110, 0.2)" }} />
+            <Text style={{ color: "#5A5A6E", fontSize: 14 }}>or</Text>
+            <View style={{ flex: 1, height: 1, backgroundColor: "rgba(90, 90, 110, 0.2)" }} />
           </View>
 
           {/* Social */}
@@ -115,7 +115,7 @@ export default function LoginScreen() {
             icon={<Ionicons name="logo-google" size={18} color="#A0A0B0" />}
           />
 
-          <View className="h-4" />
+          <View style={{ height: 16 }} />
 
           <Button
             title="Continue with Apple"
@@ -125,10 +125,10 @@ export default function LoginScreen() {
           />
 
           {/* Sign up link */}
-          <View className="flex-row justify-center mt-8">
-            <Text className="text-lumina-text-secondary text-sm">Don't have an account? </Text>
+          <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 32 }}>
+            <Text style={{ color: "#A0A0B0", fontSize: 14 }}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => router.push("/(auth)/signup")}>
-              <Text className="text-lumina-accent-purple text-sm font-semibold">Sign Up</Text>
+              <Text style={{ color: "#7C6FF7", fontSize: 14, fontWeight: "600" }}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>

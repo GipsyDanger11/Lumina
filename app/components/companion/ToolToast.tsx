@@ -8,11 +8,11 @@ interface ToolToastProps {
 
 export function ToolToast({ text }: ToolToastProps) {
   return (
-    <View className="absolute bottom-24 left-4 right-4 bg-lumina-bg-card border border-lumina-accent-purple/20 rounded-xl px-4 py-3 flex-row items-center gap-3">
-      <View className="w-5 h-5 bg-lumina-accent-purple/20 rounded-full items-center justify-center">
+    <View style={{ position: "absolute", bottom: 96, left: 16, right: 16, backgroundColor: "#1A1A24", borderWidth: 1, borderColor: "rgba(124, 111, 247, 0.2)", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, flexDirection: "row", alignItems: "center", gap: 12 }}>
+      <View style={{ width: 20, height: 20, backgroundColor: "rgba(124, 111, 247, 0.2)", borderRadius: 10, alignItems: "center", justifyContent: "center" }}>
         <Ionicons name="checkmark" size={12} color="#7C6FF7" />
       </View>
-      <Text className="text-lumina-text-primary text-sm flex-1">{text}</Text>
+      <Text style={{ color: "#FFFFFF", fontSize: 14, flex: 1 }}>{text}</Text>
     </View>
   );
 }

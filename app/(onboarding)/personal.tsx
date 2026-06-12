@@ -37,23 +37,23 @@ export default function PersonalScreen() {
   };
 
   return (
-    <View className="flex-1 bg-lumina-bg-primary">
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="px-8 pt-16">
+    <View style={{ flex: 1, backgroundColor: "#0A0A0F" }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={{ paddingHorizontal: 32, paddingTop: 64 }}>
           {/* Back */}
-          <TouchableOpacity onPress={() => router.back()} className="mb-6">
+          <TouchableOpacity onPress={() => router.back()} style={{ marginBottom: 24 }}>
             <Ionicons name="chevron-back" size={24} color="#A0A0B0" />
           </TouchableOpacity>
 
           {/* Progress */}
-          <View className="bg-lumina-bg-secondary rounded-full h-1 mb-8">
-            <View className="bg-lumina-accent-purple rounded-full h-full w-1/4" />
+          <View style={{ backgroundColor: "#12121A", borderRadius: 999, height: 4, marginBottom: 32 }}>
+            <View style={{ backgroundColor: "#7C6FF7", borderRadius: 999, height: "100%", width: "25%" }} />
           </View>
 
-          <Text className="text-lumina-text-primary text-3xl font-bold mb-2">
+          <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "700", marginBottom: 8 }}>
             About you
           </Text>
-          <Text className="text-lumina-text-secondary text-base mb-8">
+          <Text style={{ color: "#A0A0B0", fontSize: 16, marginBottom: 32 }}>
             Step 1 of 4 — Let's get to know you
           </Text>
 
@@ -73,23 +73,29 @@ export default function PersonalScreen() {
           />
 
           {/* Gender */}
-          <Text className="text-lumina-text-secondary text-sm mb-2 font-medium">Gender</Text>
-          <View className="flex-row gap-2 mb-6">
+          <Text style={{ color: "#A0A0B0", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>Gender</Text>
+          <View style={{ flexDirection: "row", gap: 8, marginBottom: 24 }}>
             {genders.map((g) => (
               <TouchableOpacity
                 key={g}
                 onPress={() => setGender(g)}
-                className={`flex-1 py-3 rounded-xl border items-center ${
-                  gender === g
-                    ? "bg-lumina-accent-purple/20 border-lumina-accent-purple"
-                    : "bg-lumina-bg-card border-lumina-text-muted/20"
-                }`}
+                style={{
+                  flex: 1,
+                  paddingVertical: 12,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: gender === g ? "#7C6FF7" : "rgba(90, 90, 110, 0.2)",
+                  alignItems: "center",
+                  backgroundColor: gender === g ? "rgba(124, 111, 247, 0.2)" : "#1A1A24",
+                }}
                 activeOpacity={0.7}
               >
                 <Text
-                  className={`text-sm font-medium ${
-                    gender === g ? "text-lumina-accent-purple" : "text-lumina-text-secondary"
-                  }`}
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "500",
+                    color: gender === g ? "#7C6FF7" : "#A0A0B0",
+                  }}
                 >
                   {g}
                 </Text>
@@ -98,16 +104,20 @@ export default function PersonalScreen() {
           </View>
 
           {/* Unit toggle */}
-          <View className="flex-row bg-lumina-bg-card rounded-xl p-1 mb-6">
+          <View style={{ flexDirection: "row", backgroundColor: "#1A1A24", borderRadius: 12, padding: 4, marginBottom: 24 }}>
             {(["metric", "imperial"] as const).map((u) => (
               <TouchableOpacity
                 key={u}
                 onPress={() => setUnit(u)}
-                className={`flex-1 py-2.5 rounded-lg items-center ${
-                  unit === u ? "bg-lumina-accent-purple" : ""
-                }`}
+                style={{
+                  flex: 1,
+                  paddingVertical: 10,
+                  borderRadius: 8,
+                  alignItems: "center",
+                  backgroundColor: unit === u ? "#7C6FF7" : "transparent",
+                }}
               >
-                <Text className={`text-sm font-medium ${unit === u ? "text-white" : "text-lumina-text-muted"}`}>
+                <Text style={{ fontSize: 14, fontWeight: "500", color: unit === u ? "#FFFFFF" : "#5A5A6E" }}>
                   {u === "metric" ? "Metric (cm/kg)" : "Imperial (ft/lbs)"}
                 </Text>
               </TouchableOpacity>
@@ -132,7 +142,7 @@ export default function PersonalScreen() {
             title="Continue"
             onPress={handleNext}
             disabled={!name || !age}
-            className="mt-4 mb-8"
+            style={{ marginTop: 16, marginBottom: 32 }}
           />
         </View>
       </ScrollView>

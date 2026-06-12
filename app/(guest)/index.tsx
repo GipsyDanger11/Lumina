@@ -1,15 +1,9 @@
 import React, { useState, useRef } from "react";
 import { View, Text, TouchableOpacity, Dimensions, FlatList } from "react-native";
 import { router } from "expo-router";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  interpolate,
-  Extrapolate,
-} from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const SLIDES = [
   {
@@ -55,27 +49,26 @@ export default function LandingScreen() {
   }).current;
 
   return (
-    <View className="flex-1 bg-lumina-bg-primary">
-      {/* Animated gradient background */}
-      <View
-        className="absolute inset-0"
-        style={{
-          backgroundColor: "#0A0A0F",
-        }}
-      />
-
-      {/* Content */}
-      <View className="flex-1 justify-center items-center px-8">
-        {/* Logo */}
-        <View className="items-center mb-12">
-          <View className="w-16 h-16 bg-lumina-accent-purple/20 rounded-2xl items-center justify-center mb-4">
+    <View style={{ flex: 1, backgroundColor: "#0A0A0F" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 32 }}>
+        <View style={{ alignItems: "center", marginBottom: 48 }}>
+          <View
+            style={{
+              width: 64,
+              height: 64,
+              backgroundColor: "rgba(124, 111, 247, 0.2)",
+              borderRadius: 16,
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 16,
+            }}
+          >
             <Ionicons name="sparkles" size={32} color="#7C6FF7" />
           </View>
-          <Text className="text-lumina-text-primary text-3xl font-bold">Lumina</Text>
+          <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "700" }}>Lumina</Text>
         </View>
 
-        {/* Carousel */}
-        <View className="h-48">
+        <View style={{ height: 192 }}>
           <FlatList
             ref={flatListRef}
             data={SLIDES}
@@ -85,81 +78,91 @@ export default function LandingScreen() {
             onViewableItemsChanged={onViewableItemsChanged}
             viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
             keyExtractor={(item) => item.id}
-            renderItem={({ item, index }) => {
-              const inputRange = [(index - 1) * width, index * width, (index + 1) * width];
-              const opacity = interpolate(
-                currentIndex * width,
-                inputRange,
-                [0, 1, 0],
-                Extrapolate.CLAMP
-              );
-              const scale = interpolate(
-                currentIndex * width,
-                inputRange,
-                [0.8, 1, 0.8],
-                Extrapolate.CLAMP
-              );
-
-              return (
-                <Animated.View
+            renderItem={({ item }) => (
+              <View style={{ width: width - 64, alignItems: "center" }}>
+                <View
                   style={{
-                    width: width - 64,
-                    opacity,
-                    transform: [{ scale }],
+                    width: 80,
+                    height: 80,
+                    borderRadius: 40,
                     alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: 24,
+                    backgroundColor: `${item.color}20`,
                   }}
                 >
-                  <View
-                    className="w-20 h-20 rounded-full items-center justify-center mb-6"
-                    style={{ backgroundColor: `${item.color}20` }}
-                  >
-                    <Ionicons name={item.icon} size={36} color={item.color} />
-                  </View>
-                  <Text className="text-lumina-text-primary text-xl font-semibold text-center leading-7">
-                    {item.title}
-                  </Text>
-                </Animated.View>
-              );
-            }}
+                  <Ionicons name={item.icon} size={36} color={item.color} />
+                </View>
+                <Text
+                  style={{
+                    color: "#FFFFFF",
+                    fontSize: 20,
+                    fontWeight: "600",
+                    textAlign: "center",
+                    lineHeight: 28,
+                  }}
+                >
+                  {item.title}
+                </Text>
+              </View>
+            )}
           />
         </View>
 
-        {/* Dots */}
-        <View className="flex-row gap-2 mt-8">
+        <View style={{ flexDirection: "row", gap: 8, marginTop: 32 }}>
           {SLIDES.map((_, index) => (
             <View
               key={index}
-              className={`rounded-full ${
-                index === currentIndex
-                  ? "w-6 h-2 bg-lumina-accent-purple"
-                  : "w-2 h-2 bg-lumina-text-muted"
-              }`}
+              style={{
+                borderRadius: index === currentIndex ? 4 : 8,
+                width: index === currentIndex ? 24 : 8,
+                height: 8,
+                backgroundColor: index === currentIndex ? "#7C6FF7" : "#5A5A6E",
+              }}
             />
           ))}
         </View>
       </View>
 
-      {/* Tagline */}
-      <Text className="text-lumina-text-secondary text-center text-sm px-8 mb-2">
+      <Text
+        style={{
+          color: "#A0A0B0",
+          textAlign: "center",
+          fontSize: 14,
+          paddingHorizontal: 32,
+          marginBottom: 8,
+        }}
+      >
         Understand yourself better, every day.
       </Text>
 
-      {/* Buttons */}
-      <View className="px-8 pb-12 gap-3">
+      <View style={{ paddingHorizontal: 32, paddingBottom: 48, gap: 12 }}>
         <TouchableOpacity
           onPress={() => router.push("/(auth)/signup")}
-          className="bg-lumina-accent-purple rounded-2xl py-4 items-center"
+          style={{
+            backgroundColor: "#7C6FF7",
+            borderRadius: 16,
+            paddingVertical: 16,
+            alignItems: "center",
+          }}
           activeOpacity={0.8}
         >
-          <Text className="text-white text-base font-semibold">Get Started</Text>
+          <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "600" }}>Get Started</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => router.push("/(guest)/explore")}
-          className="bg-lumina-bg-card border border-lumina-text-muted/20 rounded-2xl py-4 items-center"
+          style={{
+            backgroundColor: "#1A1A24",
+            borderWidth: 1,
+            borderColor: "rgba(90, 90, 110, 0.2)",
+            borderRadius: 16,
+            paddingVertical: 16,
+            alignItems: "center",
+          }}
           activeOpacity={0.8}
         >
-          <Text className="text-lumina-text-secondary text-base font-medium">
+          <Text style={{ color: "#A0A0B0", fontSize: 16, fontWeight: "500" }}>
             Explore without account
           </Text>
         </TouchableOpacity>

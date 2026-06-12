@@ -29,7 +29,7 @@ export function WaterBottle({ percentage, size = 200 }: WaterBottleProps) {
 
   const waveStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: wave.value * 20 - 10 }],
-  }));
+  }), [wave]);
 
   const fillHeight = (percentage / 100) * (size * 0.65);
   const bottleWidth = size * 0.5;

@@ -8,16 +8,16 @@ interface StreakCardProps {
 
 export function StreakCard({ days }: StreakCardProps) {
   return (
-    <View className="bg-lumina-bg-card rounded-2xl p-4 flex-row items-center justify-between">
-      <View className="flex-row items-center gap-3">
-        <View className="bg-lumina-accent-purple/20 p-2.5 rounded-xl">
+    <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+        <View style={{ backgroundColor: "rgba(124, 111, 247, 0.2)", padding: 10, borderRadius: 12 }}>
           <Ionicons name="flame" size={22} color="#7C6FF7" />
         </View>
         <View>
-          <Text className="text-lumina-text-primary text-lg font-bold" style={{ fontVariant: ["tabular-nums"] }}>
+          <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontVariant: ["tabular-nums"] }}>
             {days} day streak
           </Text>
-          <Text className="text-lumina-text-muted text-xs">
+          <Text style={{ color: "#5A5A6E", fontSize: 12 }}>
             {days === 0 ? "Start tracking to build a streak" : "Keep it going!"}
           </Text>
         </View>

@@ -35,20 +35,20 @@ export default function HomeScreen() {
 
   return (
     <ScrollView
-      className="flex-1 bg-lumina-bg-primary"
+      style={{ flex: 1, backgroundColor: "#0A0A0F" }}
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#7C6FF7" />
       }
     >
       {/* Header */}
-      <View className="pt-16 px-6 pb-4">
-        <View className="flex-row items-center justify-between">
+      <View style={{ paddingTop: 64, paddingHorizontal: 24, paddingBottom: 16 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
           <View>
-            <Text className="text-lumina-text-primary text-2xl font-bold">
+            <Text style={{ color: "#FFFFFF", fontSize: 24, fontWeight: "700" }}>
               {getGreeting()}, {profile?.name || "there"}
             </Text>
-            <Text className="text-lumina-text-secondary text-sm mt-1">
+            <Text style={{ color: "#A0A0B0", fontSize: 14, marginTop: 4 }}>
               {new Date().toLocaleDateString("en-US", {
                 weekday: "long",
                 month: "long",
@@ -56,18 +56,18 @@ export default function HomeScreen() {
               })}
             </Text>
           </View>
-          <TouchableOpacity className="p-2">
+          <TouchableOpacity style={{ padding: 8 }}>
             <Ionicons name="notifications-outline" size={24} color="#A0A0B0" />
           </TouchableOpacity>
         </View>
       </View>
 
-      <View className="px-6 gap-4 pb-8">
+      <View style={{ paddingHorizontal: 24, gap: 16, paddingBottom: 32 }}>
         {/* Insight Card */}
         <InsightCard text={insight} onRefresh={() => setInsight("Analyzing your data...")} />
 
         {/* Stats Grid */}
-        <View className="flex-row gap-3">
+        <View style={{ flexDirection: "row", gap: 12 }}>
           <HydrationCard
             currentMl={totalWaterMl}
             goalMl={2500}
@@ -80,7 +80,7 @@ export default function HomeScreen() {
           />
         </View>
 
-        <View className="flex-row gap-3">
+        <View style={{ flexDirection: "row", gap: 12 }}>
           <HabitsCard
             completed={completedHabits}
             total={habits.length}
@@ -96,9 +96,9 @@ export default function HomeScreen() {
         <StreakCard days={streak} />
 
         {/* Quick Actions */}
-        <View className="bg-lumina-bg-card rounded-2xl p-4">
-          <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Quick Actions</Text>
-          <View className="flex-row justify-between">
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16 }}>
+          <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Quick Actions</Text>
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             {[
               { label: "+Water", icon: "water", color: "#4ECDC4", route: "/(tabs)/hydration" },
               { label: "+Sleep", icon: "moon", color: "#7C6FF7", route: "/(tabs)/sleep" },
@@ -108,16 +108,15 @@ export default function HomeScreen() {
               <TouchableOpacity
                 key={action.label}
                 onPress={() => router.push(action.route as any)}
-                className="items-center gap-1.5"
+                style={{ alignItems: "center", gap: 6 }}
                 activeOpacity={0.7}
               >
                 <View
-                  className="w-12 h-12 rounded-xl items-center justify-center"
-                  style={{ backgroundColor: `${action.color}20` }}
+                  style={{ width: 48, height: 48, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: `${action.color}20` }}
                 >
                   <Ionicons name={action.icon as any} size={22} color={action.color} />
                 </View>
-                <Text className="text-lumina-text-secondary text-[10px] font-medium">
+                <Text style={{ color: "#A0A0B0", fontSize: 10, fontWeight: "500" }}>
                   {action.label}
                 </Text>
               </TouchableOpacity>

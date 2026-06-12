@@ -22,108 +22,108 @@ export default function ReportsScreen() {
     : 0;
 
   return (
-    <ScrollView className="flex-1 bg-lumina-bg-primary" showsVerticalScrollIndicator={false}>
-      <View className="pt-16 px-6">
-        <Text className="text-lumina-text-primary text-2xl font-bold mb-6">Reports</Text>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0F" }} showsVerticalScrollIndicator={false}>
+      <View style={{ paddingTop: 64, paddingHorizontal: 24 }}>
+        <Text style={{ color: "#FFFFFF", fontSize: 24, fontWeight: "700", marginBottom: 24 }}>Reports</Text>
 
         {/* Consistency Score */}
-        <View className="bg-lumina-bg-card rounded-2xl p-4 mb-4 items-center">
-          <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Consistency Score</Text>
-          <View className="w-20 h-20 bg-lumina-accent-purple/20 rounded-full items-center justify-center mb-2">
-            <Text className="text-lumina-accent-purple text-3xl font-bold">{habitRate}</Text>
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 16, alignItems: "center" }}>
+          <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Consistency Score</Text>
+          <View style={{ width: 80, height: 80, backgroundColor: "rgba(124, 111, 247, 0.2)", borderRadius: 40, alignItems: "center", justifyContent: "center", marginBottom: 8 }}>
+            <Text style={{ color: "#7C6FF7", fontSize: 30, fontWeight: "700" }}>{habitRate}</Text>
           </View>
-          <Text className="text-lumina-text-muted text-xs">habit completion rate</Text>
+          <Text style={{ color: "#5A5A6E", fontSize: 12 }}>habit completion rate</Text>
         </View>
 
         {/* Weekly Hydration */}
-        <View className="bg-lumina-bg-card rounded-2xl p-4 mb-4">
-          <Text className="text-lumina-text-secondary text-xs font-medium mb-3">This Week's Hydration</Text>
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 16 }}>
+          <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>This Week's Hydration</Text>
           {!isGuest && Object.keys(weeklyHydration).length > 0 ? (
             <WeeklyBarChart data={weeklyHydration} goal={goal} height={120} />
           ) : (
-            <View className="items-center py-6">
+            <View style={{ alignItems: "center", paddingVertical: 24 }}>
               <Ionicons name="water-outline" size={32} color="#5A5A6E" />
-              <Text className="text-lumina-text-muted text-xs mt-2">No hydration data yet</Text>
+              <Text style={{ color: "#5A5A6E", fontSize: 12, marginTop: 8 }}>No hydration data yet</Text>
             </View>
           )}
-          <View className="flex-row justify-between mt-3 pt-3 border-t border-lumina-bg-secondary">
-            <View className="items-center">
-              <Text className="text-lumina-accent-teal text-sm font-bold">{(totalWaterMl / 1000).toFixed(1)}L</Text>
-              <Text className="text-lumina-text-muted text-[10px]">today</Text>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#12121A" }}>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ color: "#4ECDC4", fontSize: 14, fontWeight: "700" }}>{(totalWaterMl / 1000).toFixed(1)}L</Text>
+              <Text style={{ color: "#5A5A6E", fontSize: 10 }}>today</Text>
             </View>
-            <View className="items-center">
-              <Text className="text-lumina-accent-teal text-sm font-bold">{(avgWater / 1000).toFixed(1)}L</Text>
-              <Text className="text-lumina-text-muted text-[10px]">daily avg</Text>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ color: "#4ECDC4", fontSize: 14, fontWeight: "700" }}>{(avgWater / 1000).toFixed(1)}L</Text>
+              <Text style={{ color: "#5A5A6E", fontSize: 10 }}>daily avg</Text>
             </View>
           </View>
         </View>
 
         {/* Sleep Summary */}
-        <View className="bg-lumina-bg-card rounded-2xl p-4 mb-4">
-          <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Sleep Summary</Text>
-          <View className="flex-row items-center gap-4">
-            <View className="w-14 h-14 bg-lumina-accent-purple/20 rounded-full items-center justify-center">
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 16 }}>
+          <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Sleep Summary</Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
+            <View style={{ width: 56, height: 56, backgroundColor: "rgba(124, 111, 247, 0.2)", borderRadius: 28, alignItems: "center", justifyContent: "center" }}>
               <Ionicons name="moon" size={24} color="#7C6FF7" />
             </View>
-            <View className="flex-1">
-              <Text className="text-lumina-text-primary text-lg font-bold">{sleep?.hours || 0}h</Text>
-              <Text className="text-lumina-text-muted text-xs">last night</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "700" }}>{sleep?.hours || 0}h</Text>
+              <Text style={{ color: "#5A5A6E", fontSize: 12 }}>last night</Text>
             </View>
-            <View className="items-center">
-              <Text className="text-lumina-text-primary text-lg font-bold">{streak}</Text>
-              <Text className="text-lumina-text-muted text-xs">day streak</Text>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "700" }}>{streak}</Text>
+              <Text style={{ color: "#5A5A6E", fontSize: 12 }}>day streak</Text>
             </View>
           </View>
         </View>
 
         {/* Habit Completion */}
-        <View className="bg-lumina-bg-card rounded-2xl p-4 mb-4">
-          <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Habits</Text>
-          <View className="flex-row items-center gap-3 mb-2">
-            <View className="flex-1 bg-lumina-bg-secondary rounded-full h-2.5">
-              <View className="bg-lumina-accent-teal rounded-full h-2.5" style={{ width: `${habitRate}%` }} />
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 16 }}>
+          <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Habits</Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 8 }}>
+            <View style={{ flex: 1, backgroundColor: "#12121A", borderRadius: 999, height: 10 }}>
+              <View style={{ backgroundColor: "#4ECDC4", borderRadius: 999, height: 10, width: `${habitRate}%` }} />
             </View>
-            <Text className="text-lumina-text-primary text-sm font-bold">{completedHabits}/{habits.length}</Text>
+            <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "700" }}>{completedHabits}/{habits.length}</Text>
           </View>
-          <Text className="text-lumina-text-muted text-xs">{habits.length > 0 ? `${habitRate}% completion rate` : "No habits created yet"}</Text>
+          <Text style={{ color: "#5A5A6E", fontSize: 12 }}>{habits.length > 0 ? `${habitRate}% completion rate` : "No habits created yet"}</Text>
         </View>
 
         {/* Nutrition Summary */}
         {meals.length > 0 && (
-          <View className="bg-lumina-bg-card rounded-2xl p-4 mb-4">
-            <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Nutrition Summary</Text>
-            <View className="flex-row justify-between">
-              <View className="items-center flex-1">
-                <Text className="text-lumina-accent-coral text-lg font-bold">{totalCalories}</Text>
-                <Text className="text-lumina-text-muted text-[10px]">calories</Text>
+          <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 16 }}>
+            <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Nutrition Summary</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <View style={{ alignItems: "center", flex: 1 }}>
+                <Text style={{ color: "#FF6B6B", fontSize: 18, fontWeight: "700" }}>{totalCalories}</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 10 }}>calories</Text>
               </View>
-              <View className="items-center flex-1">
-                <Text className="text-lumina-accent-teal text-lg font-bold">{totalProtein}g</Text>
-                <Text className="text-lumina-text-muted text-[10px]">protein</Text>
+              <View style={{ alignItems: "center", flex: 1 }}>
+                <Text style={{ color: "#4ECDC4", fontSize: 18, fontWeight: "700" }}>{totalProtein}g</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 10 }}>protein</Text>
               </View>
-              <View className="items-center flex-1">
-                <Text className="text-lumina-text-primary text-lg font-bold">{meals.length}</Text>
-                <Text className="text-lumina-text-muted text-[10px]">meals</Text>
+              <View style={{ alignItems: "center", flex: 1 }}>
+                <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "700" }}>{meals.length}</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 10 }}>meals</Text>
               </View>
             </View>
           </View>
         )}
 
         {/* Achievements */}
-        <View className="bg-lumina-bg-card rounded-2xl p-4 mb-8">
-          <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Achievements</Text>
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 32 }}>
+          <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Achievements</Text>
           {streak >= 7 ? (
-            <View className="flex-row items-center gap-3">
-              <View className="w-10 h-10 bg-lumina-accent-purple/20 rounded-full items-center justify-center">
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+              <View style={{ width: 40, height: 40, backgroundColor: "rgba(124, 111, 247, 0.2)", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
                 <Ionicons name="trophy" size={20} color="#FFD93D" />
               </View>
               <View>
-                <Text className="text-lumina-text-primary text-sm font-semibold">Week Warrior</Text>
-                <Text className="text-lumina-text-muted text-xs">7+ day streak</Text>
+                <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>Week Warrior</Text>
+                <Text style={{ color: "#5A5A6E", fontSize: 12 }}>7+ day streak</Text>
               </View>
             </View>
           ) : (
-            <Text className="text-lumina-text-muted text-xs text-center py-4">
+            <Text style={{ color: "#5A5A6E", fontSize: 12, textAlign: "center", paddingVertical: 16 }}>
               Start tracking to unlock achievements
             </Text>
           )}

@@ -63,45 +63,45 @@ export default function HydrationScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-lumina-bg-primary" showsVerticalScrollIndicator={false}>
-      <View className="pt-16 px-6">
-        <Text className="text-lumina-text-primary text-2xl font-bold mb-6">Hydration</Text>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0F" }} showsVerticalScrollIndicator={false}>
+      <View style={{ paddingTop: 64, paddingHorizontal: 24 }}>
+        <Text style={{ color: "#FFFFFF", fontSize: 24, fontWeight: "700", marginBottom: 24 }}>Hydration</Text>
 
         {/* Bottle */}
-        <View className="items-center mb-8">
+        <View style={{ alignItems: "center", marginBottom: 32 }}>
           <WaterBottle percentage={percentage} size={180} />
-          <Text className="text-lumina-text-primary text-3xl font-bold mt-4" style={{ fontVariant: ["tabular-nums"] }}>
+          <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "700", marginTop: 16, fontVariant: ["tabular-nums"] }}>
             {(totalWaterMl / 1000).toFixed(1)}L
           </Text>
-          <Text className="text-lumina-text-muted text-sm">
+          <Text style={{ color: "#5A5A6E", fontSize: 14 }}>
             of {(goal / 1000).toFixed(1)}L goal · {Math.round(percentage)}%
           </Text>
         </View>
 
         {/* Quick Add */}
-        <Text className="text-lumina-text-secondary text-xs font-medium mb-3">Quick Add</Text>
-        <View className="flex-row gap-2 mb-6 flex-wrap">
+        <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500", marginBottom: 12 }}>Quick Add</Text>
+        <View style={{ flexDirection: "row", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
           {[150, 250, 350, 500, 750].map((amount) => (
             <TouchableOpacity
               key={amount}
               onPress={() => { addWater(amount); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
-              className="bg-lumina-bg-card border border-lumina-accent-teal/20 rounded-xl px-5 py-3"
+              style={{ backgroundColor: "#1A1A24", borderWidth: 1, borderColor: "rgba(78, 205, 196, 0.2)", borderRadius: 12, paddingHorizontal: 20, paddingVertical: 12 }}
               activeOpacity={0.7}
             >
-              <Text className="text-lumina-accent-teal text-sm font-medium">{amount}ml</Text>
+              <Text style={{ color: "#4ECDC4", fontSize: 14, fontWeight: "500" }}>{amount}ml</Text>
             </TouchableOpacity>
           ))}
           <TouchableOpacity
             onPress={() => setShowCustom(true)}
-            className="bg-lumina-accent-purple/20 rounded-xl px-5 py-3"
+            style={{ backgroundColor: "rgba(124, 111, 247, 0.2)", borderRadius: 12, paddingHorizontal: 20, paddingVertical: 12 }}
             activeOpacity={0.7}
           >
-            <Text className="text-lumina-accent-purple text-sm font-medium">Custom</Text>
+            <Text style={{ color: "#7C6FF7", fontSize: 14, fontWeight: "500" }}>Custom</Text>
           </TouchableOpacity>
         </View>
 
         {/* Weekly Chart */}
-        <View className="bg-lumina-bg-card rounded-2xl p-4 mb-6">
+        <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16, marginBottom: 24 }}>
           <WeeklyBarChart data={weeklyHydration} goal={goal} />
         </View>
 
@@ -113,9 +113,9 @@ export default function HydrationScreen() {
 
       {/* Custom Amount Modal */}
       <Modal visible={showCustom} transparent animationType="fade">
-        <View className="flex-1 bg-black/60 items-center justify-center px-8">
-          <View className="bg-lumina-bg-card rounded-2xl p-6 w-full">
-            <Text className="text-lumina-text-primary text-lg font-bold mb-4">
+        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.6)", alignItems: "center", justifyContent: "center", paddingHorizontal: 32 }}>
+          <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 24, width: "100%" }}>
+            <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "700", marginBottom: 16 }}>
               Custom Amount (ml)
             </Text>
             <TextInput
@@ -124,20 +124,20 @@ export default function HydrationScreen() {
               placeholder="Enter amount"
               placeholderTextColor="#5A5A6E"
               keyboardType="numeric"
-              className="bg-lumina-bg-secondary rounded-xl px-4 py-3 text-lumina-text-primary text-base mb-4"
+              style={{ backgroundColor: "#12121A", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, color: "#FFFFFF", fontSize: 16, marginBottom: 16 }}
             />
-            <View className="flex-row gap-3">
+            <View style={{ flexDirection: "row", gap: 12 }}>
               <TouchableOpacity
                 onPress={() => setShowCustom(false)}
-                className="flex-1 py-3 rounded-xl bg-lumina-bg-secondary items-center"
+                style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: "#12121A", alignItems: "center" }}
               >
-                <Text className="text-lumina-text-secondary font-medium">Cancel</Text>
+                <Text style={{ color: "#A0A0B0", fontWeight: "500" }}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleCustomAdd}
-                className="flex-1 py-3 rounded-xl bg-lumina-accent-purple items-center"
+                style={{ flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: "#7C6FF7", alignItems: "center" }}
               >
-                <Text className="text-white font-medium">Add</Text>
+                <Text style={{ color: "#FFFFFF", fontWeight: "500" }}>Add</Text>
               </TouchableOpacity>
             </View>
           </View>

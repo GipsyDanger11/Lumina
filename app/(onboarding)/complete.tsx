@@ -31,19 +31,19 @@ export default function CompleteScreen() {
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
     opacity: opacity.value,
-  }));
+  }), [scale, opacity]);
 
   return (
-    <View className="flex-1 bg-lumina-bg-primary items-center justify-center px-8">
-      <Animated.View style={animatedStyle} className="items-center">
-        <View className="w-24 h-24 bg-lumina-accent-teal/20 rounded-full items-center justify-center mb-8">
+    <View style={{ flex: 1, backgroundColor: "#0A0A0F", alignItems: "center", justifyContent: "center", paddingHorizontal: 32 }}>
+      <Animated.View style={[{ alignItems: "center" }, animatedStyle]}>
+        <View style={{ width: 96, height: 96, backgroundColor: "rgba(78, 205, 196, 0.2)", borderRadius: 48, alignItems: "center", justifyContent: "center", marginBottom: 32 }}>
           <Ionicons name="checkmark" size={48} color="#4ECDC4" />
         </View>
 
-        <Text className="text-lumina-text-primary text-3xl font-bold mb-3 text-center">
+        <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "700", marginBottom: 12, textAlign: "center" }}>
           You're all set!
         </Text>
-        <Text className="text-lumina-text-secondary text-base text-center leading-6">
+        <Text style={{ color: "#A0A0B0", fontSize: 16, textAlign: "center", lineHeight: 24 }}>
           Your profile is ready. Let LuminaAI help you build healthier routines, one day at a time.
         </Text>
       </Animated.View>

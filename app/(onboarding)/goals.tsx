@@ -26,42 +26,47 @@ export default function GoalsScreen() {
   };
 
   return (
-    <View className="flex-1 bg-lumina-bg-primary">
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="px-8 pt-16">
-          <TouchableOpacity onPress={() => router.back()} className="mb-6">
+    <View style={{ flex: 1, backgroundColor: "#0A0A0F" }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={{ paddingHorizontal: 32, paddingTop: 64 }}>
+          <TouchableOpacity onPress={() => router.back()} style={{ marginBottom: 24 }}>
             <Ionicons name="chevron-back" size={24} color="#A0A0B0" />
           </TouchableOpacity>
 
-          <View className="bg-lumina-bg-secondary rounded-full h-1 mb-8">
-            <View className="bg-lumina-accent-purple rounded-full h-full w-3/4" />
+          <View style={{ backgroundColor: "#12121A", borderRadius: 999, height: 4, marginBottom: 32 }}>
+            <View style={{ backgroundColor: "#7C6FF7", borderRadius: 999, height: "100%", width: "75%" }} />
           </View>
 
-          <Text className="text-lumina-text-primary text-3xl font-bold mb-2">
+          <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "700", marginBottom: 8 }}>
             Your goals
           </Text>
-          <Text className="text-lumina-text-secondary text-base mb-8">
+          <Text style={{ color: "#A0A0B0", fontSize: 16, marginBottom: 32 }}>
             Step 3 of 4 — What do you want to improve?
           </Text>
 
-          <View className="flex-row flex-wrap gap-2 mb-8">
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 32 }}>
             {HealthGoals.map((goal: string) => {
               const isSelected = selectedGoals.includes(goal);
               return (
                 <TouchableOpacity
                   key={goal}
                   onPress={() => toggleGoal(goal)}
-                  className={`px-4 py-3 rounded-xl border ${
-                    isSelected
-                      ? "bg-lumina-accent-purple/20 border-lumina-accent-purple"
-                      : "bg-lumina-bg-card border-lumina-text-muted/20"
-                  }`}
+                  style={{
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
+                    borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: isSelected ? "#7C6FF7" : "rgba(90, 90, 110, 0.2)",
+                    backgroundColor: isSelected ? "rgba(124, 111, 247, 0.2)" : "#1A1A24",
+                  }}
                   activeOpacity={0.7}
                 >
                   <Text
-                    className={`text-sm font-medium ${
-                      isSelected ? "text-lumina-accent-purple" : "text-lumina-text-secondary"
-                    }`}
+                    style={{
+                      fontSize: 14,
+                      fontWeight: "500",
+                      color: isSelected ? "#7C6FF7" : "#A0A0B0",
+                    }}
                   >
                     {goal}
                   </Text>
@@ -74,7 +79,7 @@ export default function GoalsScreen() {
             title="Continue"
             onPress={handleNext}
             disabled={selectedGoals.length === 0}
-            className="mb-8"
+            style={{ marginBottom: 32 }}
           />
         </View>
       </ScrollView>

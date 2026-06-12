@@ -37,7 +37,7 @@ export function Heatmap({ data, size = 280 }: HeatmapProps) {
 
   return (
     <View>
-      <Text className="text-lumina-text-secondary text-xs mb-2">Last 4 weeks</Text>
+      <Text style={{ color: "#A0A0B0", fontSize: 12, marginBottom: 8 }}>Last 4 weeks</Text>
       <Svg width={size} height={size}>
         {cells.map((cell, i) => (
           <Rect
@@ -52,11 +52,11 @@ export function Heatmap({ data, size = 280 }: HeatmapProps) {
           />
         ))}
       </Svg>
-      <View className="flex-row gap-4 mt-2">
+      <View style={{ flexDirection: "row", gap: 16, marginTop: 8 }}>
         {Object.entries(STATUS_COLORS).map(([status, color]) => (
-          <View key={status} className="flex-row items-center gap-1">
-            <View style={{ backgroundColor: color }} className="w-2.5 h-2.5 rounded" />
-            <Text className="text-lumina-text-muted text-xs capitalize">{status}</Text>
+          <View key={status} style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            <View style={{ backgroundColor: color, width: 10, height: 10, borderRadius: 2 }} />
+            <Text style={{ color: "#5A5A6E", fontSize: 12, textTransform: "capitalize" }}>{status}</Text>
           </View>
         ))}
       </View>

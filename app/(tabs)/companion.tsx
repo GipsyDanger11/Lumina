@@ -77,15 +77,15 @@ export default function CompanionScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 bg-lumina-bg-primary"
+      style={{ flex: 1, backgroundColor: "#0A0A0F" }}
     >
       {/* Header */}
-      <View className="pt-16 px-6 flex-row items-center justify-between">
-        <Text className="text-lumina-text-primary text-xl font-bold">LuminaAI</Text>
-        <View className="flex-row gap-2">
+      <View style={{ paddingTop: 64, paddingHorizontal: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+        <Text style={{ color: "#FFFFFF", fontSize: 20, fontWeight: "700" }}>LuminaAI</Text>
+        <View style={{ flexDirection: "row", gap: 8 }}>
           <TouchableOpacity
             onPress={() => setMode(mode === "voice" ? "text" : "voice")}
-            className="p-2 bg-lumina-bg-card rounded-xl"
+            style={{ padding: 8, backgroundColor: "#1A1A24", borderRadius: 12 }}
           >
             <Ionicons
               name={mode === "voice" ? "text" : "mic"}
@@ -94,7 +94,7 @@ export default function CompanionScreen() {
             />
           </TouchableOpacity>
           {messages.length > 0 && (
-            <TouchableOpacity onPress={clearMessages} className="p-2 bg-lumina-bg-card rounded-xl">
+            <TouchableOpacity onPress={clearMessages} style={{ padding: 8, backgroundColor: "#1A1A24", borderRadius: 12 }}>
               <Ionicons name="refresh" size={18} color="#A0A0B0" />
             </TouchableOpacity>
           )}
@@ -107,27 +107,27 @@ export default function CompanionScreen() {
       {/* Messages */}
       <ScrollView
         ref={scrollRef}
-        className="flex-1 px-6"
+        style={{ flex: 1, paddingHorizontal: 24 }}
         contentContainerStyle={{ paddingTop: 16, paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}
       >
         {messages.length === 0 && (
-          <View className="items-center mt-8">
-            <Text className="text-lumina-text-muted text-sm text-center mb-6">
+          <View style={{ alignItems: "center", marginTop: 32 }}>
+            <Text style={{ color: "#5A5A6E", fontSize: 14, textAlign: "center", marginBottom: 24 }}>
               {isGuest
                 ? "Try asking LuminaAI something (free session limited)"
                 : "Ask me anything about your health"}
             </Text>
-            <View className="gap-2 w-full">
+            <View style={{ gap: 8, width: "100%" }}>
               {SUGGESTED_PROMPTS.map((prompt) => (
                 <TouchableOpacity
                   key={prompt}
                   onPress={() => handleSend(prompt)}
-                  className="bg-lumina-bg-card border border-lumina-text-muted/10 rounded-xl px-4 py-3"
+                  style={{ backgroundColor: "#1A1A24", borderWidth: 1, borderColor: "rgba(90, 90, 110, 0.1)", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12 }}
                   activeOpacity={0.7}
                 >
-                  <Text className="text-lumina-text-secondary text-sm">{prompt}</Text>
+                  <Text style={{ color: "#A0A0B0", fontSize: 14 }}>{prompt}</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -143,14 +143,13 @@ export default function CompanionScreen() {
         ))}
 
         {isLoading && (
-          <View className="items-start mb-3">
-            <View className="bg-lumina-bg-card rounded-2xl rounded-bl-md px-4 py-3">
-              <View className="flex-row gap-1">
+          <View style={{ alignItems: "flex-start", marginBottom: 12 }}>
+            <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, borderBottomLeftRadius: 4, paddingHorizontal: 16, paddingVertical: 12 }}>
+              <View style={{ flexDirection: "row", gap: 4 }}>
                 {[0, 1, 2].map((i) => (
                   <View
                     key={i}
-                    className="w-1.5 h-1.5 bg-lumina-text-muted rounded-full"
-                    style={{ opacity: 0.5 + i * 0.15 }}
+                    style={{ width: 6, height: 6, backgroundColor: "#5A5A6E", borderRadius: 3, opacity: 0.5 + i * 0.15 }}
                   />
                 ))}
               </View>
@@ -160,7 +159,7 @@ export default function CompanionScreen() {
       </ScrollView>
 
       {/* Orb */}
-      <View className="items-center py-2">
+      <View style={{ alignItems: "center", paddingVertical: 8 }}>
         <LuminaOrb state={orbState} size={mode === "voice" ? 80 : 50} />
       </View>
 
@@ -168,23 +167,28 @@ export default function CompanionScreen() {
       {toolStatus && <ToolToast text={toolStatus} />}
 
       {/* Input */}
-      <View className="px-6 pb-12 pt-2">
+      <View style={{ paddingHorizontal: 24, paddingBottom: 48, paddingTop: 8 }}>
         {mode === "text" ? (
-          <View className="flex-row items-center gap-2">
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <TextInput
               value={inputText}
               onChangeText={setInputText}
               placeholder="Type a message..."
               placeholderTextColor="#5A5A6E"
-              className="flex-1 bg-lumina-bg-card rounded-xl px-4 py-3 text-lumina-text-primary text-base"
+              style={{ flex: 1, backgroundColor: "#1A1A24", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, color: "#FFFFFF", fontSize: 16 }}
               onSubmitEditing={() => handleSend(inputText)}
               returnKeyType="send"
             />
             <TouchableOpacity
               onPress={() => handleSend(inputText)}
-              className={`w-10 h-10 rounded-xl items-center justify-center ${
-                inputText.trim() ? "bg-lumina-accent-purple" : "bg-lumina-bg-card"
-              }`}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: inputText.trim() ? "#7C6FF7" : "#1A1A24",
+              }}
             >
               <Ionicons
                 name="arrow-up"
@@ -194,17 +198,22 @@ export default function CompanionScreen() {
             </TouchableOpacity>
           </View>
         ) : (
-          <View className="items-center">
+          <View style={{ alignItems: "center" }}>
             <TouchableOpacity
               onPress={handleVoiceSend}
-              className={`w-16 h-16 rounded-full items-center justify-center ${
-                isRecording ? "bg-lumina-accent-coral" : "bg-lumina-accent-purple"
-              }`}
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: 32,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: isRecording ? "#FF6B6B" : "#7C6FF7",
+              }}
               activeOpacity={0.7}
             >
               <Ionicons name={isRecording ? "stop" : "mic"} size={28} color="white" />
             </TouchableOpacity>
-            <Text className="text-lumina-text-muted text-xs mt-2">
+            <Text style={{ color: "#5A5A6E", fontSize: 12, marginTop: 8 }}>
               {isRecording ? "Tap to stop" : isTranscribing ? "Transcribing..." : "Tap to speak"}
             </Text>
           </View>

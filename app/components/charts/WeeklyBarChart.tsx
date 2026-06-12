@@ -30,11 +30,11 @@ export function WeeklyBarChart({
 
   return (
     <View>
-      <View className="flex-row justify-between mb-2">
-        <Text className="text-lumina-text-secondary text-xs">This Week</Text>
-        <Text className="text-lumina-text-muted text-xs">Goal: {goal}ml</Text>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+        <Text style={{ color: "#A0A0B0", fontSize: 12 }}>This Week</Text>
+        <Text style={{ color: "#5A5A6E", fontSize: 12 }}>Goal: {goal}ml</Text>
       </View>
-      <View className="items-center">
+      <View style={{ alignItems: "center" }}>
         <Svg width={chartWidth} height={height + 20}>
           {values.map((value, i) => {
             const barHeight = maxValue > 0 ? (value / maxValue) * height : 0;

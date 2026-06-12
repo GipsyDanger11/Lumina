@@ -36,16 +36,16 @@ export const BorderRadius = {
 };
 
 export const HabitIcons = [
-  { name: "meditation", label: "Meditation" },
-  { name: "walk", label: "Walk" },
-  { name: "read", label: "Read" },
-  { name: "journal", label: "Journal" },
-  { name: "water", label: "Water" },
-  { name: "sleep", label: "Sleep" },
-  { name: "exercise", label: "Exercise" },
-  { name: "stretch", label: "Stretch" },
-  { name: "supplement", label: "Supplement" },
-  { name: "breathe", label: "Breathe" },
+  { name: "leaf-outline", label: "Meditation" },
+  { name: "walk-outline", label: "Walk" },
+  { name: "book-outline", label: "Read" },
+  { name: "pencil-outline", label: "Journal" },
+  { name: "water-outline", label: "Water" },
+  { name: "bed-outline", label: "Sleep" },
+  { name: "barbell-outline", label: "Exercise" },
+  { name: "hand-left-outline", label: "Stretch" },
+  { name: "medical-outline", label: "Supplement" },
+  { name: "fitness-outline", label: "Breathe" },
 ];
 
 export const ActivityLevels = [

@@ -36,7 +36,7 @@ export default function VoiceSetupScreen() {
   const [isComplete, setIsComplete] = useState(false);
   const { isRecording, isTranscribing, startRecording, stopRecording, speakText } = useVoice();
   const setProfile = useUserStore((s) => s.setProfile);
-  const speakTimeout = useRef<NodeJS.Timeout>();
+  const speakTimeout = useRef<NodeJS.Timeout>(undefined);
   const step = STEPS[currentStep];
 
   const addMessage = useCallback((role: "user" | "assistant", content: string) => {
@@ -133,33 +133,32 @@ export default function VoiceSetupScreen() {
   };
 
   return (
-    <View className="flex-1 bg-lumina-bg-primary">
+    <View style={{ flex: 1, backgroundColor: "#0A0A0F" }}>
       {/* Header */}
-      <View className="pt-16 px-6 flex-row items-center justify-between">
+      <View style={{ paddingTop: 64, paddingHorizontal: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={24} color="#A0A0B0" />
         </TouchableOpacity>
-        <Text className="text-lumina-text-muted text-sm">
+        <Text style={{ color: "#5A5A6E", fontSize: 14 }}>
           {currentStep + 1} of {STEPS.length}
         </Text>
         <TouchableOpacity onPress={() => router.replace("/(onboarding)/personal")}>
-          <Text className="text-lumina-accent-purple text-sm">Text Setup</Text>
+          <Text style={{ color: "#7C6FF7", fontSize: 14 }}>Text Setup</Text>
         </TouchableOpacity>
       </View>
 
       {/* Progress */}
-      <View className="px-6 mt-4">
-        <View className="bg-lumina-bg-secondary rounded-full h-1">
+      <View style={{ paddingHorizontal: 24, marginTop: 16 }}>
+        <View style={{ backgroundColor: "#12121A", borderRadius: 999, height: 4 }}>
           <View
-            className="bg-lumina-accent-purple rounded-full h-full"
-            style={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
+            style={{ backgroundColor: "#7C6FF7", borderRadius: 999, height: "100%", width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
           />
         </View>
       </View>
 
       {/* Chat */}
       <ScrollView
-        className="flex-1 px-6 mt-4"
+        style={{ flex: 1, paddingHorizontal: 24, marginTop: 16 }}
         contentContainerStyle={{ paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
         ref={(ref) => ref?.scrollToEnd({ animated: true })}
@@ -170,25 +169,31 @@ export default function VoiceSetupScreen() {
       </ScrollView>
 
       {/* Orb */}
-      <View className="items-center py-4">
+      <View style={{ alignItems: "center", paddingVertical: 16 }}>
         <LuminaOrb state={orbState} size={100} />
         {isTranscribing && (
-          <Text className="text-lumina-text-muted text-sm mt-2">Transcribing...</Text>
+          <Text style={{ color: "#5A5A6E", fontSize: 14, marginTop: 8 }}>Transcribing...</Text>
         )}
         {isRecording && (
-          <Text className="text-lumina-accent-coral text-sm mt-2">Recording...</Text>
+          <Text style={{ color: "#FF6B6B", fontSize: 14, marginTop: 8 }}>Recording...</Text>
         )}
       </View>
 
       {/* Controls */}
-      <View className="px-8 pb-12 items-center">
+      <View style={{ paddingHorizontal: 32, paddingBottom: 48, alignItems: "center" }}>
         {!isComplete && (
           <>
             <TouchableOpacity
               onPress={handleRecord}
-              className={`w-16 h-16 rounded-full items-center justify-center mb-4 ${
-                isRecording ? "bg-lumina-accent-coral" : "bg-lumina-accent-purple"
-              }`}
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: 32,
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 16,
+                backgroundColor: isRecording ? "#FF6B6B" : "#7C6FF7",
+              }}
               activeOpacity={0.7}
             >
               <Ionicons
@@ -199,7 +204,7 @@ export default function VoiceSetupScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleSkip}>
-              <Text className="text-lumina-text-muted text-sm">Skip this question</Text>
+              <Text style={{ color: "#5A5A6E", fontSize: 14 }}>Skip this question</Text>
             </TouchableOpacity>
           </>
         )}
