@@ -6,7 +6,7 @@ import { useHealth } from "../../hooks/useHealth";
 import { WaterBottle } from "../../components/ui/WaterBottle";
 import { WeeklyBarChart } from "../../components/charts/WeeklyBarChart";
 import { InsightCard } from "../../components/cards/InsightCard";
-import { db, doc, setDoc, arrayUnion, increment, serverTimestamp } from "../../lib/firebase";
+import { hydrationApi } from "../../lib/api";
 import { useUserStore } from "../../store/useUserStore";
 import { useHealthStore } from "../../store/useHealthStore";
 import { T, S } from "../../lib/theme";
@@ -36,22 +36,9 @@ export default function HydrationScreen() {
       return;
     }
 
-    if (!user?.uid) return;
+    if (!user?.id) return;
     const today = new Date().toISOString().split("T")[0];
-    const ref = doc(db, `users/${user.uid}/logs/hydration/${today}`);
-    await setDoc(
-      ref,
-      {
-        entries: arrayUnion({
-          amount_ml: amount,
-          beverage_type: "water",
-          timestamp: new Date().toISOString(),
-        }),
-        total_ml: increment(amount),
-        last_updated: serverTimestamp(),
-      },
-      { merge: true }
-    );
+    await hydrationApi.add(today, amount);
   };
 
   const handleCustomAdd = () => {

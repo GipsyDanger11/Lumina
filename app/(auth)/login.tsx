@@ -12,11 +12,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { T } from "../../lib/theme";
-import {
-  auth,
-  signInWithEmailAndPassword,
-} from "../../lib/firebase";
-import { signInWithGoogle, signInWithApple } from "../../lib/socialAuth";
+import { authApi, setToken } from "../../lib/api";
+import { useUserStore } from "../../store/useUserStore";
+import { useSocialAuth } from "../../hooks/useSocialAuth";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -24,6 +22,9 @@ export default function LoginScreen() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const setUser = useUserStore((s) => s.setUser);
+  const setAuthToken = useUserStore((s) => s.setToken);
+  const { signInWithGoogle, signInWithApple, loading: socialLoading, error: socialError, setError: setSocialError } = useSocialAuth();
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -40,7 +41,10 @@ export default function LoginScreen() {
     if (!validate()) return;
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const { token, user } = await authApi.login(email, password);
+      await setToken(token);
+      setAuthToken(token);
+      setUser(user);
       router.replace("/(tabs)");
     } catch (error: any) {
       setErrors({ general: error.message || "Login failed" });
@@ -49,36 +53,12 @@ export default function LoginScreen() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    try {
-      const result = await signInWithGoogle();
-      if (result.success) {
-        router.replace("/(tabs)");
-      } else if (result.error) {
-        setErrors({ general: result.error });
-      }
-    } catch (error: any) {
-      setErrors({ general: error.message || "Google sign-in failed" });
-    } finally {
-      setLoading(false);
-    }
+  const handleGoogleLogin = () => {
+    signInWithGoogle(() => router.replace("/(tabs)"));
   };
 
-  const handleAppleLogin = async () => {
-    setLoading(true);
-    try {
-      const result = await signInWithApple();
-      if (result.success) {
-        router.replace("/(tabs)");
-      } else if (result.error) {
-        setErrors({ general: result.error });
-      }
-    } catch (error: any) {
-      setErrors({ general: error.message || "Apple sign-in failed" });
-    } finally {
-      setLoading(false);
-    }
+  const handleAppleLogin = () => {
+    signInWithApple(() => router.replace("/(tabs)"));
   };
 
   return (
@@ -130,7 +110,7 @@ export default function LoginScreen() {
             Sign in to continue to Lumina
           </Text>
 
-          {errors.general && (
+          {(errors.general || socialError) && (
             <View
               style={{
                 backgroundColor: "rgba(255, 107, 107, 0.1)",
@@ -143,7 +123,7 @@ export default function LoginScreen() {
               }}
             >
               <Text style={{ color: T.accent.coral, fontSize: 14 }}>
-                {errors.general}
+                {errors.general || socialError}
               </Text>
             </View>
           )}

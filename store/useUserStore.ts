@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import { User } from "firebase/auth";
+
+export interface AppUser {
+  id: string;
+  email?: string;
+  name: string;
+}
 
 interface UserProfile {
   name: string;
@@ -18,11 +23,13 @@ interface UserProfile {
 }
 
 interface UserState {
-  user: User | null;
+  user: AppUser | null;
+  token: string | null;
   profile: UserProfile | null;
   isGuest: boolean;
   isLoading: boolean;
-  setUser: (user: User | null) => void;
+  setUser: (user: AppUser | null) => void;
+  setToken: (token: string | null) => void;
   setProfile: (profile: UserProfile | null) => void;
   setIsGuest: (isGuest: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
@@ -31,12 +38,14 @@ interface UserState {
 
 export const useUserStore = create<UserState>((set) => ({
   user: null,
+  token: null,
   profile: null,
   isGuest: true,
   isLoading: true,
   setUser: (user) => set({ user }),
+  setToken: (token) => set({ token }),
   setProfile: (profile) => set({ profile }),
   setIsGuest: (isGuest) => set({ isGuest }),
   setIsLoading: (isLoading) => set({ isLoading }),
-  clearUser: () => set({ user: null, profile: null, isGuest: true }),
+  clearUser: () => set({ user: null, token: null, profile: null, isGuest: true }),
 }));

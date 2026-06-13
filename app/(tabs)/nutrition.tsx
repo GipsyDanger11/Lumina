@@ -13,7 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useHealth } from "../../hooks/useHealth";
 import { DonutChart } from "../../components/charts/DonutChart";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { db, doc, setDoc, arrayUnion, serverTimestamp } from "../../lib/firebase";
+import { mealsApi } from "../../lib/api";
 import { useUserStore } from "../../store/useUserStore";
 import { T, S } from "../../lib/theme";
 
@@ -77,14 +77,9 @@ export default function NutritionScreen() {
       if (!mealsData[today]) mealsData[today] = [];
       mealsData[today].push(entry);
       await AsyncStorage.setItem("guest_meals", JSON.stringify(mealsData));
-    } else if (user?.uid) {
+    } else if (user?.id) {
       const today = new Date().toISOString().split("T")[0];
-      const ref = doc(db, `users/${user.uid}/logs/meals/${today}`);
-      await setDoc(
-        ref,
-        { entries: arrayUnion(entry), last_updated: serverTimestamp() },
-        { merge: true }
-      );
+      await mealsApi.add(today, entry);
     }
 
     setDescription("");

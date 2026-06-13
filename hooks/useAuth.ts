@@ -1,21 +1,33 @@
 import { useEffect, useState } from "react";
-import { auth, onAuthStateChanged } from "../lib/firebase";
-import { migrateGuestData } from "../lib/guestMigration";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { authApi, setToken as apiSetToken, clearToken } from "../lib/api";
 import { useUserStore } from "../store/useUserStore";
 
+const TOKEN_KEY = "lumina_token";
+
 export function useAuth() {
-  const { user, setUser, setIsLoading } = useUserStore();
+  const { user, setUser, setToken, setIsLoading } = useUserStore();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        setUser(firebaseUser);
+    (async () => {
+      try {
+        const stored = await AsyncStorage.getItem(TOKEN_KEY);
+        if (stored) {
+          await apiSetToken(stored);
+          const { user: userData } = await authApi.me();
+          setToken(stored);
+          setUser({ id: userData.id, email: userData.email, name: userData.name });
+        }
+      } catch {
+        await clearToken();
+        setUser(null);
+        setToken(null);
+      } finally {
+        setIsLoading(false);
+        setReady(true);
       }
-      setIsLoading(false);
-      setReady(true);
-    });
-    return () => unsubscribe();
+    })();
   }, []);
 
   return { user, isLoading: !ready, isAuthenticated: !!user };

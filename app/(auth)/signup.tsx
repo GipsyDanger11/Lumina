@@ -12,11 +12,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { T } from "../../lib/theme";
-import {
-  auth,
-  createUserWithEmailAndPassword,
-} from "../../lib/firebase";
-import { signInWithGoogle, signInWithApple } from "../../lib/socialAuth";
+import { authApi, setToken } from "../../lib/api";
+import { useSocialAuth } from "../../hooks/useSocialAuth";
 import { migrateGuestData } from "../../lib/guestMigration";
 import { useUserStore } from "../../store/useUserStore";
 
@@ -28,6 +25,8 @@ export default function SignupScreen() {
   const [loading, setLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const setUser = useUserStore((s) => s.setUser);
+  const setAuthToken = useUserStore((s) => s.setToken);
+  const { signInWithGoogle, signInWithApple, loading: socialLoading, error: socialError, setError: setSocialError } = useSocialAuth();
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -45,9 +44,11 @@ export default function SignupScreen() {
     if (!validate()) return;
     setLoading(true);
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      setUser(cred.user);
-      await migrateGuestData(cred.user.uid);
+      const { token, user } = await authApi.register(email, password, name);
+      await setToken(token);
+      setAuthToken(token);
+      setUser(user);
+      await migrateGuestData(user.id);
       router.replace("/(onboarding)/method");
     } catch (error: any) {
       setErrors({ general: error.message || "Signup failed" });
@@ -56,36 +57,12 @@ export default function SignupScreen() {
     }
   };
 
-  const handleGoogleSignup = async () => {
-    setLoading(true);
-    try {
-      const result = await signInWithGoogle();
-      if (result.success) {
-        router.replace("/(onboarding)/method");
-      } else if (result.error) {
-        setErrors({ general: result.error });
-      }
-    } catch (error: any) {
-      setErrors({ general: error.message || "Google sign-up failed" });
-    } finally {
-      setLoading(false);
-    }
+  const handleGoogleSignup = () => {
+    signInWithGoogle(() => router.replace("/(onboarding)/method"));
   };
 
-  const handleAppleSignup = async () => {
-    setLoading(true);
-    try {
-      const result = await signInWithApple();
-      if (result.success) {
-        router.replace("/(onboarding)/method");
-      } else if (result.error) {
-        setErrors({ general: result.error });
-      }
-    } catch (error: any) {
-      setErrors({ general: error.message || "Apple sign-up failed" });
-    } finally {
-      setLoading(false);
-    }
+  const handleAppleSignup = () => {
+    signInWithApple(() => router.replace("/(onboarding)/method"));
   };
 
   const renderInput = (
@@ -211,7 +188,7 @@ export default function SignupScreen() {
             Start your health journey with Lumina
           </Text>
 
-          {errors.general && (
+          {(errors.general || socialError) && (
             <View
               style={{
                 backgroundColor: "rgba(255, 107, 107, 0.1)",
@@ -224,7 +201,7 @@ export default function SignupScreen() {
               }}
             >
               <Text style={{ color: T.accent.coral, fontSize: 14 }}>
-                {errors.general}
+                {errors.general || socialError}
               </Text>
             </View>
           )}

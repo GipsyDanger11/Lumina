@@ -2,6 +2,7 @@ import React from "react";
 import { View, Platform, StyleSheet } from "react-native";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { T } from "../../lib/theme";
 
 const TAB_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
@@ -38,6 +39,7 @@ const TAB_COLORS: Record<string, string> = {
 };
 
 export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
@@ -45,9 +47,9 @@ export default function TabsLayout() {
         tabBarStyle: {
           backgroundColor: "transparent",
           borderTopWidth: 0,
-          height: 88,
+          height: 60 + Math.max(insets.bottom, 16),
           paddingTop: 8,
-          paddingBottom: 28,
+          paddingBottom: Math.max(insets.bottom, 16),
           position: "absolute" as const,
           ...Platform.select({
             ios: {
@@ -60,7 +62,19 @@ export default function TabsLayout() {
           }),
         },
         tabBarBackground: () => (
-          <View style={tabStyles.glassBackground}>
+          <View
+            style={{
+              ...Platform.select({
+                ios: { backgroundColor: "rgba(11, 11, 26, 0.85)" },
+                android: { backgroundColor: "rgba(11, 11, 26, 0.95)" },
+              }),
+              position: "absolute" as const,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 60 + Math.max(insets.bottom, 16),
+            }}
+          >
             <View style={tabStyles.glassBorder} />
           </View>
         ),
@@ -178,21 +192,6 @@ function TabIcon({
 }
 
 const tabStyles = StyleSheet.create({
-  glassBackground: {
-    ...Platform.select({
-      ios: {
-        backgroundColor: "rgba(11, 11, 26, 0.85)",
-      },
-      android: {
-        backgroundColor: "rgba(11, 11, 26, 0.95)",
-      },
-    }),
-    position: "absolute" as const,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 88,
-  },
   glassBorder: {
     position: "absolute" as const,
     top: 0,

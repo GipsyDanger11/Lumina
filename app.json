@@ -45,7 +45,8 @@
           "photosPermission": "Allow Lumina to access your photos for profile images."
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-audio"
     ],
     "experiments": {
       "typedRoutes": true

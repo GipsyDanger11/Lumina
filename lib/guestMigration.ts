@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { db, doc, setDoc, collection, serverTimestamp } from "./firebase";
+import { hydrationApi, sleepApi, mealsApi, habitsApi, habitLogsApi } from "./api";
 
 const GUEST_KEYS = [
   "guest_hydration",
@@ -21,24 +21,23 @@ export async function migrateGuestData(userId: string): Promise<number> {
 
       switch (key) {
         case "guest_hydration": {
-          const ref = doc(db, `users/${userId}/logs/hydration/current`);
-          await setDoc(ref, { ...data, migrated: true, migrated_at: serverTimestamp() });
+          if (data.total_ml > 0) {
+            const today = new Date().toISOString().split("T")[0];
+            await hydrationApi.put(today, data);
+          }
           break;
         }
         case "guest_sleep": {
-          const ref = doc(db, `users/${userId}/logs/sleep/current`);
-          await setDoc(ref, { ...data, migrated: true, migrated_at: serverTimestamp() });
+          if (data.hours) {
+            const date = data.date || new Date().toISOString().split("T")[0];
+            await sleepApi.put(date, data);
+          }
           break;
         }
         case "guest_habits": {
           if (Array.isArray(data)) {
             for (const habit of data) {
-              const habitsRef = collection(db, `users/${userId}/habits`);
-              await setDoc(doc(habitsRef), {
-                ...habit,
-                migrated: true,
-                created_at: serverTimestamp(),
-              });
+              await habitsApi.create(habit);
             }
           }
           break;
@@ -48,8 +47,7 @@ export async function migrateGuestData(userId: string): Promise<number> {
             for (const [date, logs] of Object.entries(data)) {
               if (typeof logs === "object" && logs !== null) {
                 for (const [habitId, logData] of Object.entries(logs as Record<string, any>)) {
-                  const ref = doc(db, `users/${userId}/habit_logs/${date}/${habitId}`);
-                  await setDoc(ref, { ...logData, migrated: true });
+                  await habitLogsApi.put(date, habitId, logData.status || "completed");
                 }
               }
             }
@@ -57,18 +55,23 @@ export async function migrateGuestData(userId: string): Promise<number> {
           break;
         }
         case "guest_meals": {
-          const ref = doc(db, `users/${userId}/logs/meals/current`);
-          await setDoc(ref, { ...data, migrated: true, migrated_at: serverTimestamp() });
+          if (typeof data === "object") {
+            for (const [date, entries] of Object.entries(data)) {
+              if (Array.isArray(entries)) {
+                for (const entry of entries) {
+                  await mealsApi.add(date, entry);
+                }
+              }
+            }
+          }
           break;
         }
       }
 
       migratedCount++;
-      // Clear guest data after migration
       await AsyncStorage.removeItem(key);
     }
 
-    // Clear migration marker
     await AsyncStorage.removeItem("guest_migrated");
   } catch (error) {
     console.error("Guest migration error:", error);

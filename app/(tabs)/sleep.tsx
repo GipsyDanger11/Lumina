@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useHealth } from "../../hooks/useHealth";
 import { SleepQualities } from "../../constants";
 import { InsightCard } from "../../components/cards/InsightCard";
-import { db, doc, setDoc, serverTimestamp, collection, getDocs } from "../../lib/firebase";
+import { sleepApi } from "../../lib/api";
 import { useUserStore } from "../../store/useUserStore";
 import { T, S } from "../../lib/theme";
 
@@ -52,15 +52,12 @@ export default function SleepScreen() {
             entries.push({ date: key, hours: data.hours, quality: data.quality || "" });
           }
         }
-      } else if (user?.uid) {
+      } else if (user?.id) {
         try {
-          const snap = await getDocs(collection(db, `users/${user.uid}/logs/sleep`));
-          snap.docs.forEach((doc) => {
-            if (doc.id === key) {
-              const data = doc.data();
-              entries.push({ date: key, hours: data.hours, quality: data.quality || "" });
-            }
-          });
+          const { log } = await sleepApi.get(key);
+          if (log) {
+            entries.push({ date: key, hours: log.hours, quality: log.quality || "" });
+          }
         } catch {}
       }
     }
@@ -81,10 +78,9 @@ export default function SleepScreen() {
         "guest_sleep",
         JSON.stringify({ hours: h, quality, date: new Date().toISOString() })
       );
-    } else if (user?.uid) {
+    } else if (user?.id) {
       const today = new Date().toISOString().split("T")[0];
-      const ref = doc(db, `users/${user.uid}/logs/sleep/${today}`);
-      await setDoc(ref, { hours: h, quality, logged_at: serverTimestamp() }, { merge: true });
+      await sleepApi.put(today, { hours: h, quality });
     }
     setSaved(true);
     loadHistory();

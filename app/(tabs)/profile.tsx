@@ -15,7 +15,7 @@ import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useUserStore } from "../../store/useUserStore";
 import { useHealthStore } from "../../store/useHealthStore";
-import { auth, signOut, db, doc, setDoc, serverTimestamp } from "../../lib/firebase";
+import { profileApi, clearToken } from "../../lib/api";
 import { ActivityLevels, HealthGoals } from "../../constants";
 import { T, S } from "../../lib/theme";
 
@@ -41,7 +41,7 @@ export default function ProfileScreen() {
         text: "Sign Out",
         style: "destructive",
         onPress: async () => {
-          await signOut(auth);
+          await clearToken();
           clearUser();
           router.replace("/(guest)");
         },
@@ -50,17 +50,11 @@ export default function ProfileScreen() {
   };
 
   const saveProfile = async () => {
-    if (!user?.uid) return;
-    const ref = doc(db, `users/${user.uid}/profile/main`);
-    await setDoc(
-      ref,
-      {
-        name: editName || profile?.name,
-        age: parseInt(editAge) || profile?.age,
-        updated_at: serverTimestamp(),
-      },
-      { merge: true }
-    );
+    if (!user?.id) return;
+    await profileApi.update({
+      name: editName || profile?.name,
+      age: parseInt(editAge) || profile?.age,
+    });
     useUserStore
       .getState()
       .setProfile({
@@ -72,9 +66,8 @@ export default function ProfileScreen() {
   };
 
   const saveGoals = async () => {
-    if (!user?.uid) return;
-    const ref = doc(db, `users/${user.uid}/profile/main`);
-    await setDoc(ref, { goals: selectedGoals, updated_at: serverTimestamp() }, { merge: true });
+    if (!user?.id) return;
+    await profileApi.update({ goals: selectedGoals });
     useUserStore.getState().setProfile({ ...profile, goals: selectedGoals } as any);
     setActiveModal(null);
   };

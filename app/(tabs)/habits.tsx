@@ -15,16 +15,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import { useHealth } from "../../hooks/useHealth";
 import { Heatmap } from "../../components/charts/Heatmap";
-import {
-  db,
-  doc,
-  setDoc,
-  collection,
-  addDoc,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-} from "../../lib/firebase";
+import { habitsApi, habitLogsApi } from "../../lib/api";
 import { useUserStore } from "../../store/useUserStore";
 import { HabitIcons } from "../../constants";
 import { T, S } from "../../lib/theme";
@@ -70,15 +61,11 @@ export default function HabitsScreen() {
       return;
     }
 
-    if (!user?.uid) return;
-    const ref = doc(db, `users/${user.uid}/habit_logs/${today}/${habitId}`);
+    if (!user?.id) return;
     if (completed) {
-      await deleteDoc(ref);
+      await habitLogsApi.put(today, habitId, "pending");
     } else {
-      await setDoc(ref, {
-        status: "completed",
-        timestamp: new Date().toISOString(),
-      });
+      await habitLogsApi.put(today, habitId, "completed");
     }
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   };
@@ -105,15 +92,13 @@ export default function HabitsScreen() {
         icon: newHabitIcon,
         color: "#7C6FF7",
       });
-    } else if (user?.uid) {
-      const habitsRef = collection(db, `users/${user.uid}/habits`);
-      await addDoc(habitsRef, {
+    } else if (user?.id) {
+      await habitsApi.create({
         name: newHabitName,
         frequency: "daily",
         time_of_day: newHabitTime,
         icon: newHabitIcon,
         color: "#7C6FF7",
-        created_at: serverTimestamp(),
         active: true,
       });
     }
@@ -123,14 +108,14 @@ export default function HabitsScreen() {
   };
 
   const deleteHabit = async (habitId: string) => {
-    if (!user?.uid) return;
+    if (!user?.id) return;
     Alert.alert("Delete Habit", "Are you sure?", [
       { text: "Cancel", style: "cancel" },
       {
         text: "Delete",
         style: "destructive",
         onPress: async () => {
-          await deleteDoc(doc(db, `users/${user.uid}/habits/${habitId}`));
+          await habitsApi.del(habitId);
           setShowAction(null);
         },
       },
@@ -147,8 +132,8 @@ export default function HabitsScreen() {
   };
 
   const saveEdit = async () => {
-    if (!user?.uid || !editHabit) return;
-    await updateDoc(doc(db, `users/${user.uid}/habits/${editHabit.id}`), {
+    if (!user?.id || !editHabit) return;
+    await habitsApi.update(editHabit.id, {
       name: editName,
       icon: editIcon,
       time_of_day: editTime,

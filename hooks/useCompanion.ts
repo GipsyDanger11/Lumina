@@ -3,7 +3,7 @@ import { runAgentLoop, extractObservations, HealthContext, Message } from "../li
 import { useUserStore } from "../store/useUserStore";
 import { useHealthStore } from "../store/useHealthStore";
 import { useGuestStore, GUEST_MAX_SESSIONS } from "../store/useGuestStore";
-import { getMemories, addMemory } from "../lib/firebase";
+import { memoriesApi } from "../lib/api";
 
 export function useCompanion() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -77,8 +77,9 @@ export function useCompanion() {
 
       try {
         // Load memories for authenticated users
-        if (!isGuest && user?.uid) {
-          memoriesRef.current = await getMemories(user.uid);
+        if (!isGuest && user?.id) {
+          const res = await memoriesApi.get();
+          memoriesRef.current = res.items;
         }
 
         const context = buildContext();
@@ -88,7 +89,7 @@ export function useCompanion() {
           text,
           context,
           history,
-          user?.uid || "guest",
+          user?.id || "guest",
           (toolName, result) => {
             setToolStatus(`${toolName}: ${result}`);
             setTimeout(() => setToolStatus(null), 3000);
@@ -103,11 +104,11 @@ export function useCompanion() {
         }
 
         // Extract and store memories in background
-        if (!isGuest && user?.uid) {
+        if (!isGuest && user?.id) {
           const allMessages = [...messages, userMsg, assistantMsg];
           extractObservations(allMessages, memoriesRef.current).then((obs) => {
             if (obs.length > 0) {
-              addMemory(user.uid, obs);
+              memoriesApi.add(obs);
               memoriesRef.current = [...memoriesRef.current, ...obs].slice(-10);
             }
           });

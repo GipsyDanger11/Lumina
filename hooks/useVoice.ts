@@ -1,74 +1,37 @@
-import { useState, useCallback, useRef } from "react";
-import { Audio } from "expo-av";
+import { useState, useCallback } from "react";
+import { useAudioRecorder, RecordingPresets, setAudioModeAsync, requestRecordingPermissionsAsync } from "expo-audio";
 import { transcribeAudio } from "../lib/whisper";
 import { speak, stopSpeaking } from "../lib/tts";
 
 export function useVoice() {
-  const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const recordingRef = useRef<Audio.Recording | null>(null);
+  const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
 
   const startRecording = useCallback(async () => {
     try {
       await stopSpeaking();
-      const permission = await Audio.requestPermissionsAsync();
+      const permission = await requestRecordingPermissionsAsync();
       if (!permission.granted) return;
 
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
-
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY ??
-          {
-            isMeteringEnabled: true,
-            android: {
-              extension: ".m4a",
-              outputFormat: Audio.AndroidOutputFormat.MPEG_4,
-              audioEncoder: Audio.AndroidAudioEncoder.AAC,
-              sampleRate: 44100,
-              numberOfChannels: 1,
-              bitRate: 128000,
-            },
-            ios: {
-              extension: ".m4a",
-              outputFormat: Audio.IOSOutputFormat.MPEG4AAC,
-              audioQuality: Audio.IOSAudioQuality.MAX,
-              sampleRate: 44100,
-              numberOfChannels: 1,
-              bitRate: 128000,
-              linearPCMBitDepth: 16,
-              linearPCMIsBigEndian: false,
-              linearPCMIsFloat: false,
-            },
-            web: {
-              mimeType: "audio/webm;codecs=opus",
-              bitsPerSecond: 128000,
-            },
-          }
-      );
-      recordingRef.current = recording;
-      setIsRecording(true);
+      await setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
+      await recorder.prepareToRecordAsync();
+      recorder.record();
     } catch (error) {
       console.error("Recording error:", error);
     }
-  }, []);
+  }, [recorder]);
 
   const stopRecording = useCallback(async (): Promise<string | null> => {
-    if (!recordingRef.current) return null;
+    if (!recorder.isRecording) return null;
 
-    setIsRecording(false);
     setIsTranscribing(true);
 
     try {
-      await recordingRef.current.stopAndUnloadAsync();
-      await Audio.setAudioModeAsync({ allowsRecordingIOS: false });
+      await recorder.stop();
+      await setAudioModeAsync({ allowsRecording: false, playsInSilentMode: true });
 
-      const uri = recordingRef.current.getURI();
-      recordingRef.current = null;
-
+      const uri = recorder.uri;
       if (uri) {
         const text = await transcribeAudio(uri);
         setTranscript(text);
@@ -81,24 +44,20 @@ export function useVoice() {
 
     setIsTranscribing(false);
     return null;
-  }, []);
+  }, [recorder]);
 
   const speakText = useCallback(async (text: string) => {
     await speak(text);
   }, []);
 
-  const stopSpeakingVoice = useCallback(async () => {
-    await stopSpeaking();
-  }, []);
-
   return {
-    isRecording,
+    isRecording: recorder.isRecording,
     isTranscribing,
     transcript,
     startRecording,
     stopRecording,
     speakText,
-    stopSpeaking: stopSpeakingVoice,
+    stopSpeaking,
     setTranscript,
   };
 }

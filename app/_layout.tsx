@@ -5,7 +5,7 @@ import { useFonts } from "expo-font";
 import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import { useAuth } from "../hooks/useAuth";
 import { useUserStore } from "../store/useUserStore";
-import { getUserProfile } from "../lib/firebase";
+import { profileApi } from "../lib/api";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
@@ -23,8 +23,8 @@ export default function RootLayout() {
   useEffect(() => {
     if (user) {
       setIsGuest(false);
-      getUserProfile(user.uid).then((profile) => {
-        if (profile) setProfile(profile as any);
+      profileApi.get().then((res) => {
+        if (res.profile) setProfile(res.profile as any);
       });
     } else if (!isLoading) {
       setIsGuest(true);

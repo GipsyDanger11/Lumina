@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { useFocusEffect } from "expo-router";
 import { LuminaOrb } from "../../components/companion/LuminaOrb";
 import { ChatBubble } from "../../components/companion/ChatBubble";
 import { ToolToast } from "../../components/companion/ToolToast";
@@ -38,13 +39,19 @@ export default function CompanionScreen() {
   const scrollRef = useRef<ScrollView>(null);
   const [orbState, setOrbState] = useState<"idle" | "listening" | "speaking" | "processing">("idle");
 
+  // Stop TTS when navigating away
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => { stopSpeaking(); };
+    }, [])
+  );
+
   useEffect(() => {
     if (isRecording) setOrbState("listening");
     else if (isLoading) setOrbState("processing");
     else setOrbState("idle");
   }, [isRecording, isLoading]);
 
-  // Auto-speak assistant responses in voice mode
   const prevMsgCount = useRef(messages.length);
   useEffect(() => {
     if (mode === "voice" && messages.length > prevMsgCount.current) {
@@ -79,16 +86,17 @@ export default function CompanionScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={S.screen}
+      style={{ flex: 1, backgroundColor: T.bg.primary }}
     >
       {/* Header */}
       <View
         style={{
-          paddingTop: 64,
+          paddingTop: Platform.OS === "ios" ? 64 : 40,
           paddingHorizontal: 24,
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
+          paddingBottom: 8,
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
@@ -151,7 +159,7 @@ export default function CompanionScreen() {
       <ScrollView
         ref={scrollRef}
         style={{ flex: 1, paddingHorizontal: 24 }}
-        contentContainerStyle={{ paddingTop: 16, paddingBottom: 20 }}
+        contentContainerStyle={{ paddingTop: 16, paddingBottom: 12 }}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}
       >
@@ -250,7 +258,7 @@ export default function CompanionScreen() {
       </ScrollView>
 
       {/* Orb */}
-      <View style={{ alignItems: "center", paddingVertical: 8 }}>
+      <View style={{ alignItems: "center", paddingVertical: 6 }}>
         <LuminaOrb state={orbState} size={mode === "voice" ? 80 : 50} />
       </View>
 
@@ -258,7 +266,7 @@ export default function CompanionScreen() {
       {toolStatus && <ToolToast text={toolStatus} />}
 
       {/* Input */}
-      <View style={{ paddingHorizontal: 24, paddingBottom: 48, paddingTop: 8 }}>
+      <View style={{ paddingHorizontal: 24, paddingBottom: Platform.OS === "ios" ? 32 : 24, paddingTop: 8 }}>
         {mode === "text" ? (
           <View
             style={{
