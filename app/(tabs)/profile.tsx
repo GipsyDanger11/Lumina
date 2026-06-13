@@ -13,11 +13,11 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { useUserStore } from "../store/useUserStore";
-import { useHealthStore } from "../store/useHealthStore";
-import { auth, signOut, db, doc, setDoc, serverTimestamp } from "../lib/firebase";
+import { useUserStore } from "../../store/useUserStore";
+import { useHealthStore } from "../../store/useHealthStore";
+import { auth, signOut, db, doc, setDoc, serverTimestamp } from "../../lib/firebase";
 import { ActivityLevels, HealthGoals } from "../../constants";
-import { T, S } from "../lib/theme";
+import { T, S } from "../../lib/theme";
 
 type SettingModal = "edit" | "notifications" | "units" | "goals" | null;
 

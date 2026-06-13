@@ -10,12 +10,12 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useHealth } from "../hooks/useHealth";
-import { DonutChart } from "../components/charts/DonutChart";
+import { useHealth } from "../../hooks/useHealth";
+import { DonutChart } from "../../components/charts/DonutChart";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { db, doc, setDoc, arrayUnion, serverTimestamp } from "../lib/firebase";
-import { useUserStore } from "../store/useUserStore";
-import { T, S } from "../lib/theme";
+import { db, doc, setDoc, arrayUnion, serverTimestamp } from "../../lib/firebase";
+import { useUserStore } from "../../store/useUserStore";
+import { T, S } from "../../lib/theme";
 
 const MEAL_TYPES = [
   { key: "breakfast", label: "Breakfast", icon: "sunny" as const, time: "7-9 AM", color: T.accent.gold },

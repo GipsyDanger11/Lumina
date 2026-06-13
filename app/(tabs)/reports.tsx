@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, ScrollView, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useHealth } from "../hooks/useHealth";
-import { WeeklyBarChart } from "../components/charts/WeeklyBarChart";
-import { useUserStore } from "../store/useUserStore";
-import { T, S } from "../lib/theme";
+import { useHealth } from "../../hooks/useHealth";
+import { WeeklyBarChart } from "../../components/charts/WeeklyBarChart";
+import { useUserStore } from "../../store/useUserStore";
+import { T, S } from "../../lib/theme";
 
 export default function ReportsScreen() {
   const { totalWaterMl, sleep, habits, habitLogs, meals, streak, weeklyHydration } = useHealth();

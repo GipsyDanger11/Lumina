@@ -10,15 +10,15 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { LuminaOrb } from "../components/companion/LuminaOrb";
-import { ChatBubble } from "../components/companion/ChatBubble";
-import { ToolToast } from "../components/companion/ToolToast";
-import { GuestBanner } from "../components/guest/GuestBanner";
-import { useCompanion } from "../hooks/useCompanion";
-import { useVoice } from "../hooks/useVoice";
-import { useUserStore } from "../store/useUserStore";
+import { LuminaOrb } from "../../components/companion/LuminaOrb";
+import { ChatBubble } from "../../components/companion/ChatBubble";
+import { ToolToast } from "../../components/companion/ToolToast";
+import { GuestBanner } from "../../components/guest/GuestBanner";
+import { useCompanion } from "../../hooks/useCompanion";
+import { useVoice } from "../../hooks/useVoice";
+import { useUserStore } from "../../store/useUserStore";
 import { router } from "expo-router";
-import { T, S } from "../lib/theme";
+import { T, S } from "../../lib/theme";
 
 const SUGGESTED_PROMPTS = [
   "How am I doing today?",

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Platform, StyleSheet } from "react-native";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { T } from "../lib/theme";
+import { T } from "../../lib/theme";
 
 const TAB_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   index: "home",

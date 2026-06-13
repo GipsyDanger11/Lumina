@@ -17,12 +17,12 @@ import Animated, {
   withSequence,
   Easing,
 } from "react-native-reanimated";
-import { T } from "../lib/theme";
-import { LuminaOrb } from "../components/companion/LuminaOrb";
-import { ChatBubble } from "../components/companion/ChatBubble";
-import { useVoice } from "../hooks/useVoice";
-import { parseVoiceInput } from "../lib/mistral";
-import { useUserStore } from "../store/useUserStore";
+import { T } from "../../lib/theme";
+import { LuminaOrb } from "../../components/companion/LuminaOrb";
+import { ChatBubble } from "../../components/companion/ChatBubble";
+import { useVoice } from "../../hooks/useVoice";
+import { parseVoiceInput } from "../../lib/mistral";
+import { useUserStore } from "../../store/useUserStore";
 
 interface OnboardingStep {
   field: string;

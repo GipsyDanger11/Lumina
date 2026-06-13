@@ -27,7 +27,9 @@
         "backgroundColor": "#0A0A0F"
       },
       "package": "com.lumina.health",
-      "permissions": ["RECORD_AUDIO"]
+      "permissions": [
+        "RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -42,7 +44,8 @@
         {
           "photosPermission": "Allow Lumina to access your photos for profile images."
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useHealth } from "../hooks/useHealth";
+import { useHealth } from "../../hooks/useHealth";
 import { SleepQualities } from "../../constants";
-import { InsightCard } from "../components/cards/InsightCard";
-import { db, doc, setDoc, serverTimestamp, collection, getDocs } from "../lib/firebase";
-import { useUserStore } from "../store/useUserStore";
-import { T, S } from "../lib/theme";
+import { InsightCard } from "../../components/cards/InsightCard";
+import { db, doc, setDoc, serverTimestamp, collection, getDocs } from "../../lib/firebase";
+import { useUserStore } from "../../store/useUserStore";
+import { T, S } from "../../lib/theme";
 
 const qualityColorMap: Record<string, string> = {
   poor: T.accent.coral,

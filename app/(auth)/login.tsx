@@ -11,14 +11,12 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { T } from "../lib/theme";
+import { T } from "../../lib/theme";
 import {
   auth,
   signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  OAuthProvider,
-  signInWithRedirect,
-} from "../lib/firebase";
+} from "../../lib/firebase";
+import { signInWithGoogle, signInWithApple } from "../../lib/socialAuth";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -52,20 +50,34 @@ export default function LoginScreen() {
   };
 
   const handleGoogleLogin = async () => {
+    setLoading(true);
     try {
-      const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
+      const result = await signInWithGoogle();
+      if (result.success) {
+        router.replace("/(tabs)");
+      } else if (result.error) {
+        setErrors({ general: result.error });
+      }
     } catch (error: any) {
       setErrors({ general: error.message || "Google sign-in failed" });
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleAppleLogin = async () => {
+    setLoading(true);
     try {
-      const provider = new OAuthProvider("apple.com");
-      await signInWithRedirect(auth, provider);
+      const result = await signInWithApple();
+      if (result.success) {
+        router.replace("/(tabs)");
+      } else if (result.error) {
+        setErrors({ general: result.error });
+      }
     } catch (error: any) {
       setErrors({ general: error.message || "Apple sign-in failed" });
+    } finally {
+      setLoading(false);
     }
   };
 

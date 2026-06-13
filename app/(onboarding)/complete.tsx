@@ -12,7 +12,7 @@ import Animated, {
   withRepeat,
   Easing,
 } from "react-native-reanimated";
-import { T } from "../lib/theme";
+import { T } from "../../lib/theme";
 
 export default function CompleteScreen() {
   const scale = useSharedValue(0);

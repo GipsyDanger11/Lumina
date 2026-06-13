@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Platform } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { useHealth } from "../hooks/useHealth";
-import { useUserStore } from "../store/useUserStore";
-import { HydrationCard } from "../components/cards/HydrationCard";
-import { SleepCard } from "../components/cards/SleepCard";
-import { HabitsCard } from "../components/cards/HabitsCard";
-import { NutritionCard } from "../components/cards/NutritionCard";
-import { StreakCard } from "../components/cards/StreakCard";
-import { InsightCard } from "../components/cards/InsightCard";
-import { T } from "../lib/theme";
+import { useHealth } from "../../hooks/useHealth";
+import { useUserStore } from "../../store/useUserStore";
+import { HydrationCard } from "../../components/cards/HydrationCard";
+import { SleepCard } from "../../components/cards/SleepCard";
+import { HabitsCard } from "../../components/cards/HabitsCard";
+import { NutritionCard } from "../../components/cards/NutritionCard";
+import { StreakCard } from "../../components/cards/StreakCard";
+import { InsightCard } from "../../components/cards/InsightCard";
+import { T } from "../../lib/theme";
 
 export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);

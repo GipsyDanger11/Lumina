@@ -13,8 +13,8 @@ import { Ionicons } from "@expo/vector-icons";
 import Svg, { Circle } from "react-native-svg";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
-import { useHealth } from "../hooks/useHealth";
-import { Heatmap } from "../components/charts/Heatmap";
+import { useHealth } from "../../hooks/useHealth";
+import { Heatmap } from "../../components/charts/Heatmap";
 import {
   db,
   doc,
@@ -24,10 +24,10 @@ import {
   serverTimestamp,
   deleteDoc,
   updateDoc,
-} from "../lib/firebase";
-import { useUserStore } from "../store/useUserStore";
+} from "../../lib/firebase";
+import { useUserStore } from "../../store/useUserStore";
 import { HabitIcons } from "../../constants";
-import { T, S } from "../lib/theme";
+import { T, S } from "../../lib/theme";
 
 const RING_SIZE = 52;
 const RING_STROKE = 5;
@@ -62,7 +62,7 @@ export default function HabitsScreen() {
 
   const toggleHabit = async (habitId: string, completed: boolean) => {
     if (isGuest) {
-      const { useGuestStore } = await import("../store/useGuestStore");
+      const { useGuestStore } = await import("../../store/useGuestStore");
       useGuestStore
         .getState()
         .completeGuestHabit(habitId, completed ? "completed" : "pending");
@@ -88,7 +88,7 @@ export default function HabitsScreen() {
 
     if (isGuest) {
       const { useGuestStore, GUEST_MAX_HABITS } = await import(
-        "../store/useGuestStore"
+        "../../store/useGuestStore"
       );
       if (habits.length >= GUEST_MAX_HABITS) {
         Alert.alert(

@@ -9,8 +9,8 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { T } from "../lib/theme";
-import { useUserStore } from "../store/useUserStore";
+import { T } from "../../lib/theme";
+import { useUserStore } from "../../store/useUserStore";
 import { HealthGoals } from "../../constants";
 
 const GOAL_ICONS: Record<string, string> = {

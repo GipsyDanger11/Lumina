@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { T } from "../lib/theme";
+import { T } from "../../lib/theme";
 
 const { width, height } = Dimensions.get("window");
 

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Modal, TextInput, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { useHealth } from "../hooks/useHealth";
-import { WaterBottle } from "../components/ui/WaterBottle";
-import { WeeklyBarChart } from "../components/charts/WeeklyBarChart";
-import { InsightCard } from "../components/cards/InsightCard";
-import { db, doc, setDoc, arrayUnion, increment, serverTimestamp } from "../lib/firebase";
-import { useUserStore } from "../store/useUserStore";
-import { useHealthStore } from "../store/useHealthStore";
-import { T, S } from "../lib/theme";
+import { useHealth } from "../../hooks/useHealth";
+import { WaterBottle } from "../../components/ui/WaterBottle";
+import { WeeklyBarChart } from "../../components/charts/WeeklyBarChart";
+import { InsightCard } from "../../components/cards/InsightCard";
+import { db, doc, setDoc, arrayUnion, increment, serverTimestamp } from "../../lib/firebase";
+import { useUserStore } from "../../store/useUserStore";
+import { useHealthStore } from "../../store/useHealthStore";
+import { T, S } from "../../lib/theme";
 
 export default function HydrationScreen() {
   const [showCustom, setShowCustom] = useState(false);
@@ -23,7 +23,7 @@ export default function HydrationScreen() {
 
   const addWater = async (amount: number) => {
     if (isGuest) {
-      const { useGuestStore } = await import("../store/useGuestStore");
+      const { useGuestStore } = await import("../../store/useGuestStore");
       useGuestStore.getState().addGuestWater({
         amount_ml: amount,
         beverage_type: "water",

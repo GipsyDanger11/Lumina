@@ -11,16 +11,14 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { T } from "../lib/theme";
+import { T } from "../../lib/theme";
 import {
   auth,
   createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  OAuthProvider,
-  signInWithRedirect,
-} from "../lib/firebase";
-import { migrateGuestData } from "../lib/guestMigration";
-import { useUserStore } from "../store/useUserStore";
+} from "../../lib/firebase";
+import { signInWithGoogle, signInWithApple } from "../../lib/socialAuth";
+import { migrateGuestData } from "../../lib/guestMigration";
+import { useUserStore } from "../../store/useUserStore";
 
 export default function SignupScreen() {
   const [name, setName] = useState("");
@@ -59,20 +57,34 @@ export default function SignupScreen() {
   };
 
   const handleGoogleSignup = async () => {
+    setLoading(true);
     try {
-      const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
+      const result = await signInWithGoogle();
+      if (result.success) {
+        router.replace("/(onboarding)/method");
+      } else if (result.error) {
+        setErrors({ general: result.error });
+      }
     } catch (error: any) {
       setErrors({ general: error.message || "Google sign-up failed" });
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleAppleSignup = async () => {
+    setLoading(true);
     try {
-      const provider = new OAuthProvider("apple.com");
-      await signInWithRedirect(auth, provider);
+      const result = await signInWithApple();
+      if (result.success) {
+        router.replace("/(onboarding)/method");
+      } else if (result.error) {
+        setErrors({ general: result.error });
+      }
     } catch (error: any) {
       setErrors({ general: error.message || "Apple sign-up failed" });
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -9,10 +9,10 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { T } from "../lib/theme";
-import { useUserStore } from "../store/useUserStore";
-import { setUserProfile } from "../lib/firebase";
-import { setupReminders } from "../lib/notifications";
+import { T } from "../../lib/theme";
+import { useUserStore } from "../../store/useUserStore";
+import { setUserProfile } from "../../lib/firebase";
+import { setupReminders } from "../../lib/notifications";
 
 interface ReminderItem {
   key: string;

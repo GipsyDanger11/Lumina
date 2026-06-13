@@ -3,8 +3,8 @@ import { View, Text, ScrollView, TouchableOpacity, Platform } from "react-native
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { T } from "../lib/theme";
-import { useGuestStore } from "../store/useGuestStore";
+import { T } from "../../lib/theme";
+import { useGuestStore } from "../../store/useGuestStore";
 
 const QUICK_ACTIONS = [
   { icon: "water-outline" as const, label: "Water", color: T.accent.teal, gradient: T.gradient.teal },
