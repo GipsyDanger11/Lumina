@@ -1,11 +1,28 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Switch } from "react-native";
-import { router } from "expo-router";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { Button } from "../components/ui/Button";
+import { router } from "expo-router";
+import { T } from "../lib/theme";
 import { useUserStore } from "../store/useUserStore";
 import { setUserProfile } from "../lib/firebase";
 import { setupReminders } from "../lib/notifications";
+
+interface ReminderItem {
+  key: string;
+  title: string;
+  desc: string;
+  icon: string;
+  color: string;
+  state: boolean;
+  setter: (v: boolean) => void;
+}
 
 export default function NotificationsScreen() {
   const [hydrationReminder, setHydrationReminder] = useState(true);
@@ -43,112 +60,106 @@ export default function NotificationsScreen() {
     router.replace("/(tabs)");
   };
 
+  const reminders: ReminderItem[] = [
+    { key: "hydration", title: "Hydration Reminders", desc: "Remind to drink water", icon: "water", color: T.accent.teal, state: hydrationReminder, setter: setHydrationReminder },
+    { key: "sleep", title: "Sleep Reminders", desc: "Remind to log sleep", icon: "moon", color: T.accent.purple, state: sleepReminder, setter: setSleepReminder },
+    { key: "habits", title: "Habit Reminders", desc: "Remind about daily habits", icon: "checkmark-circle", color: T.accent.coral, state: habitReminder, setter: setHabitReminder },
+    { key: "insights", title: "Daily Insights", desc: "Get personalized tips", icon: "sparkles", color: T.accent.gold, state: insightNotifications, setter: setInsightNotifications },
+  ];
+
   return (
-    <View style={{ flex: 1, backgroundColor: "#0A0A0F" }}>
+    <View style={{ flex: 1, backgroundColor: T.bg.primary }}>
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <View style={{ paddingHorizontal: 32, paddingTop: 64 }}>
-          <TouchableOpacity onPress={() => router.back()} style={{ marginBottom: 24 }}>
-            <Ionicons name="chevron-back" size={24} color="#A0A0B0" />
+        <View style={{ paddingHorizontal: 24, paddingTop: 60 }}>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: T.bg.card, borderWidth: 1, borderColor: T.glass.border, alignItems: "center", justifyContent: "center", marginBottom: 24 }}
+          >
+            <Ionicons name="chevron-back" size={22} color={T.text.secondary} />
           </TouchableOpacity>
 
-          <View style={{ backgroundColor: "#12121A", borderRadius: 999, height: 4, marginBottom: 32 }}>
-            <View style={{ backgroundColor: "#7C6FF7", borderRadius: 999, height: "100%", width: "100%" }} />
+          <View style={{ backgroundColor: T.bg.elevated, borderRadius: 999, height: 4, marginBottom: 32, overflow: "hidden" }}>
+            <LinearGradient colors={T.gradient.teal} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={{ borderRadius: 999, height: "100%", width: "100%" }} />
           </View>
 
-          <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "700", marginBottom: 8 }}>
+          <Text style={{ color: T.text.primary, fontSize: 28, fontWeight: "800", letterSpacing: -0.5, marginBottom: 8 }}>
             Stay on track
           </Text>
-          <Text style={{ color: "#A0A0B0", fontSize: 16, marginBottom: 32 }}>
-            Step 4 of 4 — Choose your reminders
+          <Text style={{ color: T.text.muted, fontSize: 15, marginBottom: 32, lineHeight: 22 }}>
+            Step 4 of 4 {"\u2014"} Choose your reminders
           </Text>
 
-          <View style={{ gap: 16 }}>
-            {/* Hydration */}
-            <View style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-                <View style={{ width: 40, height: 40, backgroundColor: "rgba(78, 205, 196, 0.2)", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
-                  <Ionicons name="water" size={20} color="#4ECDC4" />
+          <View style={{ gap: 12 }}>
+            {reminders.map((item) => (
+              <View
+                key={item.key}
+                style={{
+                  backgroundColor: T.glass.bg,
+                  borderRadius: 18,
+                  padding: 18,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderWidth: 1,
+                  borderColor: T.glass.border,
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 14, flex: 1 }}>
+                  <View
+                    style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: 14,
+                      backgroundColor: item.color + "20",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Ionicons name={item.icon as any} size={20} color={item.color} />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ color: T.text.primary, fontSize: 15, fontWeight: "600" }}>
+                      {item.title}
+                    </Text>
+                    <Text style={{ color: T.text.muted, fontSize: 12, marginTop: 2 }}>{item.desc}</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>
-                    Hydration Reminders
-                  </Text>
-                  <Text style={{ color: "#5A5A6E", fontSize: 12 }}>Remind to drink water</Text>
-                </View>
-              </View>
-              <Switch
-                value={hydrationReminder}
-                onValueChange={setHydrationReminder}
-                trackColor={{ false: "#1A1A24", true: "#7C6FF7" }}
-                thumbColor="white"
-              />
-            </View>
 
-            {/* Sleep */}
-            <View style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-                <View style={{ width: 40, height: 40, backgroundColor: "rgba(124, 111, 247, 0.2)", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
-                  <Ionicons name="moon" size={20} color="#7C6FF7" />
-                </View>
-                <View>
-                  <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>
-                    Sleep Reminders
-                  </Text>
-                  <Text style={{ color: "#5A5A6E", fontSize: 12 }}>Remind to log sleep</Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() => item.setter(!item.state)}
+                  activeOpacity={0.7}
+                >
+                  <View style={{ width: 52, height: 30, borderRadius: 15, backgroundColor: item.state ? T.accent.purple : T.bg.elevated, justifyContent: "center", alignItems: item.state ? "flex-end" : "flex-start", paddingHorizontal: 3 }}>
+                    <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: "#FFFFFF" }} />
+                  </View>
+                </TouchableOpacity>
               </View>
-              <Switch
-                value={sleepReminder}
-                onValueChange={setSleepReminder}
-                trackColor={{ false: "#1A1A24", true: "#7C6FF7" }}
-                thumbColor="white"
-              />
-            </View>
-
-            {/* Habits */}
-            <View style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-                <View style={{ width: 40, height: 40, backgroundColor: "rgba(255, 107, 107, 0.2)", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
-                  <Ionicons name="checkmark-circle" size={20} color="#FF6B6B" />
-                </View>
-                <View>
-                  <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>
-                    Habit Reminders
-                  </Text>
-                  <Text style={{ color: "#5A5A6E", fontSize: 12 }}>Remind about daily habits</Text>
-                </View>
-              </View>
-              <Switch
-                value={habitReminder}
-                onValueChange={setHabitReminder}
-                trackColor={{ false: "#1A1A24", true: "#7C6FF7" }}
-                thumbColor="white"
-              />
-            </View>
-
-            {/* Insights */}
-            <View style={{ backgroundColor: "#1A1A24", borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-                <View style={{ width: 40, height: 40, backgroundColor: "rgba(255, 217, 61, 0.2)", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
-                  <Ionicons name="sparkles" size={20} color="#FFD93D" />
-                </View>
-                <View>
-                  <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>
-                    Daily Insights
-                  </Text>
-                  <Text style={{ color: "#5A5A6E", fontSize: 12 }}>Get personalized tips</Text>
-                </View>
-              </View>
-              <Switch
-                value={insightNotifications}
-                onValueChange={setInsightNotifications}
-                trackColor={{ false: "#1A1A24", true: "#7C6FF7" }}
-                thumbColor="white"
-              />
-            </View>
+            ))}
           </View>
 
-          <Button title="Complete Setup" onPress={handleComplete} style={{ marginTop: 32, marginBottom: 32 }} />
+          <TouchableOpacity
+            onPress={handleComplete}
+            activeOpacity={0.8}
+            style={{ marginTop: 32, marginBottom: 40 }}
+          >
+            <LinearGradient
+              colors={T.gradient.teal}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={{
+                borderRadius: 16,
+                height: 56,
+                alignItems: "center",
+                justifyContent: "center",
+                ...Platform.select({
+                  ios: { shadowColor: T.accent.teal, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 16 },
+                  android: { elevation: 8 },
+                }),
+              }}
+            >
+              <Text style={{ color: "#fff", fontSize: 17, fontWeight: "700", letterSpacing: 0.3 }}>Complete Setup</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>

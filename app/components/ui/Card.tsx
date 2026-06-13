@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { T, S } from "../../lib/theme";
 
 interface CardProps {
   children: React.ReactNode;
@@ -12,15 +13,41 @@ export function Card({ children, onPress, style }: CardProps) {
     return (
       <TouchableOpacity
         onPress={onPress}
-        activeOpacity={0.7}
-        style={[{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16 }, style]}
+        activeOpacity={0.8}
+        style={[
+          {
+            backgroundColor: T.glass.bg,
+            borderRadius: 24,
+            padding: 20,
+            borderWidth: 1,
+            borderColor: T.glass.border,
+            ...S.shadow(8),
+          },
+          style,
+        ]}
       >
         {children}
       </TouchableOpacity>
     );
   }
 
-  return <View style={[{ backgroundColor: "#1A1A24", borderRadius: 16, padding: 16 }, style]}>{children}</View>;
+  return (
+    <View
+      style={[
+        {
+          backgroundColor: T.glass.bg,
+          borderRadius: 24,
+          padding: 20,
+          borderWidth: 1,
+          borderColor: T.glass.border,
+          ...S.shadow(8),
+        },
+        style,
+      ]}
+    >
+      {children}
+    </View>
+  );
 }
 
 interface StatCardProps {
@@ -32,17 +59,72 @@ interface StatCardProps {
   onPress?: () => void;
 }
 
-export function StatCard({ title, value, subtitle, icon, color = "#7C6FF7", onPress }: StatCardProps) {
+export function StatCard({
+  title,
+  value,
+  subtitle,
+  icon,
+  color = T.accent.purple,
+  onPress,
+}: StatCardProps) {
   return (
     <Card onPress={onPress} style={{ flex: 1, minWidth: "45%" }}>
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-        <Text style={{ color: "#A0A0B0", fontSize: 12, fontWeight: "500" }}>{title}</Text>
-        {icon && <View style={{ backgroundColor: `${color}20`, padding: 6, borderRadius: 8 }}>{icon}</View>}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 16,
+        }}
+      >
+        <Text
+          style={{
+            color: T.text.muted,
+            fontSize: 12,
+            fontWeight: "600",
+            letterSpacing: 0.5,
+            textTransform: "uppercase",
+          }}
+        >
+          {title}
+        </Text>
+        {icon && (
+          <View
+            style={{
+              backgroundColor: `${color}20`,
+              width: 32,
+              height: 32,
+              borderRadius: 10,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {icon}
+          </View>
+        )}
       </View>
-      <Text style={{ color: "#FFFFFF", fontSize: 24, fontWeight: "700", fontVariant: ["tabular-nums"] }}>
+      <Text
+        style={{
+          color: T.text.primary,
+          fontSize: 28,
+          fontWeight: "800",
+          letterSpacing: -1,
+          fontVariant: ["tabular-nums"],
+        }}
+      >
         {value}
       </Text>
-      {subtitle && <Text style={{ color: "#5A5A6E", fontSize: 12, marginTop: 4 }}>{subtitle}</Text>}
+      {subtitle && (
+        <Text
+          style={{
+            color: T.text.muted,
+            fontSize: 13,
+            marginTop: 4,
+          }}
+        >
+          {subtitle}
+        </Text>
+      )}
     </Card>
   );
 }

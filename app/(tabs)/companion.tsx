@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { LuminaOrb } from "../components/companion/LuminaOrb";
 import { ChatBubble } from "../components/companion/ChatBubble";
@@ -17,6 +18,7 @@ import { useCompanion } from "../hooks/useCompanion";
 import { useVoice } from "../hooks/useVoice";
 import { useUserStore } from "../store/useUserStore";
 import { router } from "expo-router";
+import { T, S } from "../lib/theme";
 
 const SUGGESTED_PROMPTS = [
   "How am I doing today?",
@@ -77,25 +79,66 @@ export default function CompanionScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1, backgroundColor: "#0A0A0F" }}
+      style={S.screen}
     >
       {/* Header */}
-      <View style={{ paddingTop: 64, paddingHorizontal: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-        <Text style={{ color: "#FFFFFF", fontSize: 20, fontWeight: "700" }}>LuminaAI</Text>
+      <View
+        style={{
+          paddingTop: 64,
+          paddingHorizontal: 24,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+          <LinearGradient
+            colors={[...T.gradient.purple]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 18,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Ionicons name="sparkles" size={18} color="#FFF" />
+          </LinearGradient>
+          <Text style={{ color: T.text.primary, fontSize: 20, fontWeight: "700" }}>
+            LuminaAI
+          </Text>
+        </View>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <TouchableOpacity
             onPress={() => setMode(mode === "voice" ? "text" : "voice")}
-            style={{ padding: 8, backgroundColor: "#1A1A24", borderRadius: 12 }}
+            style={{
+              padding: 8,
+              backgroundColor: mode === "voice" ? "rgba(255, 107, 107, 0.15)" : T.bg.card,
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: mode === "voice" ? "rgba(255, 107, 107, 0.3)" : T.glass.border,
+            }}
           >
             <Ionicons
               name={mode === "voice" ? "text" : "mic"}
               size={18}
-              color="#7C6FF7"
+              color={mode === "voice" ? T.accent.coral : T.accent.purple}
             />
           </TouchableOpacity>
           {messages.length > 0 && (
-            <TouchableOpacity onPress={clearMessages} style={{ padding: 8, backgroundColor: "#1A1A24", borderRadius: 12 }}>
-              <Ionicons name="refresh" size={18} color="#A0A0B0" />
+            <TouchableOpacity
+              onPress={clearMessages}
+              style={{
+                padding: 8,
+                backgroundColor: T.bg.card,
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: T.glass.border,
+              }}
+            >
+              <Ionicons name="refresh" size={18} color={T.text.muted} />
             </TouchableOpacity>
           )}
         </View>
@@ -113,21 +156,50 @@ export default function CompanionScreen() {
         onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}
       >
         {messages.length === 0 && (
-          <View style={{ alignItems: "center", marginTop: 32 }}>
-            <Text style={{ color: "#5A5A6E", fontSize: 14, textAlign: "center", marginBottom: 24 }}>
+          <View style={{ alignItems: "center", marginTop: 24 }}>
+            <LuminaOrb state="idle" size={100} />
+            <Text
+              style={{
+                color: T.text.muted,
+                fontSize: 14,
+                textAlign: "center",
+                marginTop: 20,
+                marginBottom: 24,
+                lineHeight: 20,
+              }}
+            >
               {isGuest
-                ? "Try asking LuminaAI something (free session limited)"
-                : "Ask me anything about your health"}
+                ? "Try asking LuminaAI something\n(free session limited)"
+                : "Ask me anything about\nyour health & wellness"}
             </Text>
             <View style={{ gap: 8, width: "100%" }}>
               {SUGGESTED_PROMPTS.map((prompt) => (
                 <TouchableOpacity
                   key={prompt}
                   onPress={() => handleSend(prompt)}
-                  style={{ backgroundColor: "#1A1A24", borderWidth: 1, borderColor: "rgba(90, 90, 110, 0.1)", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12 }}
+                  style={{
+                    backgroundColor: T.glass.bg,
+                    borderWidth: 1,
+                    borderColor: T.glass.border,
+                    borderRadius: 14,
+                    paddingHorizontal: 16,
+                    paddingVertical: 13,
+                    ...Platform.select({
+                      ios: {
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 8,
+                      },
+                      android: { elevation: 3 },
+                    }),
+                  }}
                   activeOpacity={0.7}
                 >
-                  <Text style={{ color: "#A0A0B0", fontSize: 14 }}>{prompt}</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                    <Ionicons name="chatbubble-ellipses-outline" size={14} color={T.accent.purpleLight} />
+                    <Text style={{ color: T.text.secondary, fontSize: 14 }}>{prompt}</Text>
+                  </View>
                 </TouchableOpacity>
               ))}
             </View>
@@ -144,14 +216,33 @@ export default function CompanionScreen() {
 
         {isLoading && (
           <View style={{ alignItems: "flex-start", marginBottom: 12 }}>
-            <View style={{ backgroundColor: "#1A1A24", borderRadius: 16, borderBottomLeftRadius: 4, paddingHorizontal: 16, paddingVertical: 12 }}>
-              <View style={{ flexDirection: "row", gap: 4 }}>
+            <View
+              style={{
+                backgroundColor: T.glass.bg,
+                borderRadius: 18,
+                borderBottomLeftRadius: 6,
+                paddingHorizontal: 18,
+                paddingVertical: 14,
+                borderWidth: 1,
+                borderColor: T.glass.border,
+              }}
+            >
+              <View style={{ flexDirection: "row", gap: 5, alignItems: "center" }}>
                 {[0, 1, 2].map((i) => (
                   <View
                     key={i}
-                    style={{ width: 6, height: 6, backgroundColor: "#5A5A6E", borderRadius: 3, opacity: 0.5 + i * 0.15 }}
+                    style={{
+                      width: 7,
+                      height: 7,
+                      backgroundColor: T.accent.purple,
+                      borderRadius: 3.5,
+                      opacity: 0.4 + i * 0.2,
+                    }}
                   />
                 ))}
+                <Text style={{ color: T.text.muted, fontSize: 12, marginLeft: 6 }}>
+                  Thinking...
+                </Text>
               </View>
             </View>
           </View>
@@ -169,31 +260,58 @@ export default function CompanionScreen() {
       {/* Input */}
       <View style={{ paddingHorizontal: 24, paddingBottom: 48, paddingTop: 8 }}>
         {mode === "text" ? (
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 8,
+              backgroundColor: T.glass.bg,
+              borderRadius: 16,
+              borderWidth: 1,
+              borderColor: T.glass.border,
+              paddingHorizontal: 4,
+              paddingVertical: 4,
+              ...Platform.select({
+                ios: {
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 12,
+                },
+                android: { elevation: 6 },
+              }),
+            }}
+          >
             <TextInput
               value={inputText}
               onChangeText={setInputText}
               placeholder="Type a message..."
-              placeholderTextColor="#5A5A6E"
-              style={{ flex: 1, backgroundColor: "#1A1A24", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, color: "#FFFFFF", fontSize: 16 }}
+              placeholderTextColor={T.text.muted}
+              style={{
+                flex: 1,
+                paddingHorizontal: 14,
+                paddingVertical: 12,
+                color: T.text.primary,
+                fontSize: 16,
+              }}
               onSubmitEditing={() => handleSend(inputText)}
               returnKeyType="send"
             />
             <TouchableOpacity
               onPress={() => handleSend(inputText)}
               style={{
-                width: 40,
-                height: 40,
+                width: 42,
+                height: 42,
                 borderRadius: 12,
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: inputText.trim() ? "#7C6FF7" : "#1A1A24",
+                backgroundColor: inputText.trim() ? T.accent.purple : "transparent",
               }}
             >
               <Ionicons
                 name="arrow-up"
                 size={20}
-                color={inputText.trim() ? "white" : "#5A5A6E"}
+                color={inputText.trim() ? "#FFF" : T.text.muted}
               />
             </TouchableOpacity>
           </View>
@@ -202,18 +320,27 @@ export default function CompanionScreen() {
             <TouchableOpacity
               onPress={handleVoiceSend}
               style={{
-                width: 64,
-                height: 64,
-                borderRadius: 32,
+                width: 68,
+                height: 68,
+                borderRadius: 34,
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: isRecording ? "#FF6B6B" : "#7C6FF7",
+                backgroundColor: isRecording ? T.accent.coral : T.accent.purple,
+                ...Platform.select({
+                  ios: {
+                    shadowColor: isRecording ? T.accent.coral : T.accent.purple,
+                    shadowOffset: { width: 0, height: 6 },
+                    shadowOpacity: 0.5,
+                    shadowRadius: 20,
+                  },
+                  android: { elevation: 10 },
+                }),
               }}
               activeOpacity={0.7}
             >
               <Ionicons name={isRecording ? "stop" : "mic"} size={28} color="white" />
             </TouchableOpacity>
-            <Text style={{ color: "#5A5A6E", fontSize: 12, marginTop: 8 }}>
+            <Text style={{ color: T.text.muted, fontSize: 12, marginTop: 10 }}>
               {isRecording ? "Tap to stop" : isTranscribing ? "Transcribing..." : "Tap to speak"}
             </Text>
           </View>

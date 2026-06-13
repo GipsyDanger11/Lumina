@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TextInputProps } from "react-native";
+import { T, S } from "../../lib/theme";
 
 interface InputProps extends TextInputProps {
   label: string;
@@ -12,29 +13,73 @@ export function Input({ label, error, icon, ...props }: InputProps) {
 
   return (
     <View style={{ marginBottom: 16 }}>
-      <Text style={{ color: "#A0A0B0", fontSize: 14, marginBottom: 6, fontWeight: "500" }}>{label}</Text>
+      <Text
+        style={{
+          color: T.text.secondary,
+          fontSize: 14,
+          marginBottom: 8,
+          fontWeight: "600",
+          letterSpacing: 0.3,
+        }}
+      >
+        {label}
+      </Text>
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
-          backgroundColor: "#1A1A24",
-          borderRadius: 12,
+          backgroundColor: T.glass.bg,
+          borderRadius: 16,
           borderWidth: 1,
-          borderColor: isFocused ? "#7C6FF7" : error ? "#FF6B6B" : "rgba(90, 90, 110, 0.2)",
+          borderColor: isFocused
+            ? T.accent.purple
+            : error
+            ? T.accent.coral
+            : T.glass.border,
           paddingHorizontal: 16,
-          paddingVertical: 12,
+          paddingVertical: 14,
+          ...(isFocused
+            ? {
+                ...S.shadow(4, T.accent.purple),
+              }
+            : {}),
         }}
       >
-        {icon && <View style={{ marginRight: 12 }}>{icon}</View>}
+        {icon && (
+          <View
+            style={{
+              marginRight: 12,
+              opacity: isFocused ? 1 : 0.5,
+            }}
+          >
+            {icon}
+          </View>
+        )}
         <TextInput
-          style={{ flex: 1, color: "#FFFFFF", fontSize: 16 }}
-          placeholderTextColor="#5A5A6E"
+          style={{
+            flex: 1,
+            color: T.text.primary,
+            fontSize: 16,
+            fontWeight: "500",
+          }}
+          placeholderTextColor={T.text.muted}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           {...props}
         />
       </View>
-      {error && <Text style={{ color: "#FF6B6B", fontSize: 12, marginTop: 4 }}>{error}</Text>}
+      {error && (
+        <Text
+          style={{
+            color: T.accent.coral,
+            fontSize: 12,
+            marginTop: 6,
+            fontWeight: "500",
+          }}
+        >
+          {error}
+        </Text>
+      )}
     </View>
   );
 }
